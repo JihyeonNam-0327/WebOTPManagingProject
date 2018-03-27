@@ -3,9 +3,33 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ page import="java.sql.*, javax.sql.*, java.io.*, java.util.Date, java.math.*, java.text.*" %>
+<%@ page import="java.net.*, java.io.*" %>
+<% request.setCharacterEncoding("utf-8");%>
+<%
+//세션을 체크해서 없다면 로그인창으로 보냅니다. 그리고 로그인이 되면 자기 자신에게 와야하므로 
+//자기 자신의 url을 써주어야 합니다. 여기에선 login_check.jsp
+
+	String loginOK="";
+	String jumpURL="login.jsp?jump=login_check.jsp";
+	
+	//login값이 없는지, login_ok 키의 value값이 yes가 맞는지 확인합니다.
+	loginOK = (String)session.getAttribute("login_ok");
+	if(loginOK==null){
+		response.sendRedirect(jumpURL);
+		return;
+	}
+	if(!loginOK.equals("yes")){
+		response.sendRedirect(jumpURL);
+		return;
+	}
+%>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <head>
 <script type="text/javascript">
+function call(){
+	top.document.location.reload(); // 페이지 새로고침 함수(프레임이 나뉘어져 있어도 바로 
+}
+
 var xhr = null;
 
 function getXMLHttpRequest(){
