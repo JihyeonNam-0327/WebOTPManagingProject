@@ -51,6 +51,8 @@ try{
 %>
 QR코드 : <%=qrcode%><br>
 <%
+	/* 사실 이 부분은 login 구현한 다음에 id값과 otp값이 맞는지 확인하고 managingDB에 time_in/out을 입력하는 부분입니다. */
+	
 	Date today = new Date();
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	String curDate = sdf.format(today);
@@ -119,6 +121,7 @@ QR코드 : <%=qrcode%><br>
 		pstm.execute();
 	}*/
 	
+	rset.close();
 	pstm.close();
 	conn.close(); 
 }catch(SQLException e){

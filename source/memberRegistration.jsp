@@ -37,6 +37,14 @@ input.ng-valid {
 <form name="myForm" ng-controller="myCtrl">
 <div class="form-group center-block">
 * 모든 항목은 필수 입력 항목입니다.<br><br>
+	<label>학과 : </label><br>
+		<div>
+			<select class="form-control" name="dept" id="dept" ng-model="selectedDept" ng-options="x for x in deptList">
+			</select>
+		</div>
+</div>
+<div class="form-group center-block">
+
 	<label>이름 : </label><br>
 	<input type="text" name="name" class="form-control input-lg " ng-model="user.Name" ng-required="true" ng-maxlength="20"/>
 	<div ng-show="myForm.name.$error.maxlength" class="form-control alert alert-light" role="alert">이름 최대 20글자만 입력가능합니다.</div>
@@ -74,8 +82,8 @@ input.ng-valid {
 </div>
 <br>
 <div class="form-group center-block">
-	<input type="button" value="Cancle" id="button1" class="btn btn-lg col-xs-6 col-md-2 pull-right btn-warning"/>
 	<input type="button" value="Sing Up" id="button2" class="btn btn-lg col-xs-6 col-md-2 pull-right btn-info"/>
+	<input type="button" value="Cancle" id="button1" class="btn btn-lg col-xs-6 col-md-2 pull-right btn-warning"/>
 </div>
 <br>
 </form>
@@ -106,6 +114,12 @@ angular.module('myApp', [])
 			}
 		});
     };
+	
+	
+	
+	$scope.deptList = ["데이터융합SW과", "임베디드시스템과", "생명의료시스템과"];
+	
+	
 }]);
 
 function checkPwd(){
@@ -192,6 +206,7 @@ $("#button1").click(function() {
 });
 
 $("#button2").click(function() {
+	var dept = $("#dept option:selected").text();
 	var id = $("#_id").val();
 	var name = $("#name").val();
 	var status_id = $("#result_id_msg").text();
@@ -200,8 +215,9 @@ $("#button2").click(function() {
 	var email = $("#email").val();
 	phone = phone.replace(/-/gi, "");
 
-	if(status_id != "사용 가능한 학번입니다." || status_pw != "암호를 확인했습니다." || name == "" || phone.length < 10 || email == "" || id.length > 10){
-		alert("회원가입 양식에 맞추어 다시 작성해 주세요.");
+	if(status_id != "사용 가능한 학번입니다." || status_pw != "암호를 확인했습니다." || name == "" 
+	  || phone.length < 10 || email == "" || id.length > 10 || dept == "" ){
+		alert("회원가입 양식에 맞추어 작성해 주세요. \n 혹시 빈 칸이 있는 지 확인해 보세요.");
 		return;
 	}else{
 		myForm.action = "memberRegistrationDo.jsp";

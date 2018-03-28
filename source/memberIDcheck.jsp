@@ -1,11 +1,9 @@
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ page import="java.sql.*, javax.sql.*, java.io.*, java.util.Date, java.math.*, java.text.*" %>
-<%@ page import = "java.util.List" %>
 <%
 request.setCharacterEncoding("utf-8");
 String _id = request.getParameter("id");
 String re = "0";
-
 
 try{
 	Class.forName("com.mysql.jdbc.Driver");

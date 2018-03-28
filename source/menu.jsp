@@ -27,7 +27,7 @@ a:active {text-decoration:none;}
 		<a href='setting.jsp' target=main style='a.no-uline { text-decoration:none; }'>
 		| 입/퇴실 시간 설정 
 		</a>
-		<a href='memberRegistration.jsp' target=main>
+		<a href='memberManage.jsp' target=main>
 		 | 학생 관리 
 		</a>
 		<a href='manage.jsp' target=main>

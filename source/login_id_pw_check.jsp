@@ -33,7 +33,7 @@ try{
 	String admin_pw = null;
 	int howmanytimes = 0;
 	
-	query = "select id, pass, hidden from admininfo where id=?;";
+	query = "select _id, password, hidden from memberDB where _id=?;";
 	pstm = conn.prepareStatement(query);
 	pstm.setString(1, id);
 	rset = pstm.executeQuery();		//데이터 저장
@@ -49,7 +49,7 @@ try{
 		
 		if(howmanytimes<5){
 			bPassCk=true;
-			query = "update admininfo set hidden = 0 where id=?;";
+			query = "update memberDB set hidden = 0 where _id=?;";
 			pstm = conn.prepareStatement(query);
 			pstm.setString(1, id);
 			pstm.execute();
@@ -67,7 +67,7 @@ try{
 	//아이디는 맞는데 비밀번호가 틀린 경우
 	}else if( id.replaceAll(" ","").equals(admin_id) &&  !pass.replaceAll(" ","").equals(admin_pw)){
 		bPassCk=false;
-		query = "select hidden from admininfo where id=?;";
+		query = "select hidden from memberDB where _id=?;";
 		pstm = conn.prepareStatement(query);
 		pstm.setString(1, id);
 		rset = pstm.executeQuery();		//데이터 저장
@@ -82,7 +82,7 @@ try{
 		}
 		
 		//아이디는 맞는데 비밀번호가 틀린 경우 hidden컬럼에 1을 추가해줍니다.
-		query = "update admininfo set hidden=hidden+1 where id='"+admin_id+"';";
+		query = "update memberDB set hidden=hidden+1 where _id='"+admin_id+"';";
 		pstm = conn.prepareStatement(query);
 		pstm.execute();
 	
@@ -94,7 +94,7 @@ try{
 		//아이디와 비밀번호 둘다 틀린 경우
 		bPassCk=false;
 		out.println("<center><br><br><br><br><br><br><br>아이디 또는 비밀번호가 틀렸습니다.</center>");
-		query = "update admininfo set hidden=hidden+1 where id='"+admin_id+"';";
+		query = "update memberDB set hidden=hidden+1 where _id='"+admin_id+"';";
 		pstm = conn.prepareStatement(query);
 		pstm.execute();
 	}
