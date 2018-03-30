@@ -2,7 +2,7 @@
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
 <%@ page contentType="text/html; charset=utf-8" %>
-<%@ page import="java.sql.*, javax.sql.*, java.io.*, java.util.*, java.math.*, java.text.*" %>
+<%@ page import="java.sql.*, javax.sql.*, java.io.*, java.util.Date, java.math.*, java.text.*" %>
 <% request.setCharacterEncoding("utf-8");%>
 <head>
 <!-- 합쳐지고 최소화된 최신 CSS -->
@@ -31,7 +31,10 @@ out.println("<b>입실 시간 :" + attd + "</b><br>");
 out.println("<b>입실 OTP 유효 시간 :" + attd_interval + "</b><br>");
 out.println("<b>퇴실 시간 :" + leave_ + "</b><br>");
 out.println("<b>퇴실 OTP 유효 시간 :" + leave_interval + "</b><br><br>");
-
+Date today = new Date();
+SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+String curDate = sdf.format(today);
+	
 try{
 	Class.forName("com.mysql.jdbc.Driver");
 	Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/KOPOCTC","root","alslf2gk");
@@ -52,6 +55,20 @@ try{
 		pstm.setString(3,leave_);
 		pstm.setString(4,leave_interval);
 		pstm.execute();		// 데이터 입력
+		
+		query = "update managingDB set time_in=null where time_in is not null;";
+		pstm = conn.prepareStatement(query);
+		pstm.execute();
+		query = "update managingDB set time_out=null where time_out is not null;";
+		pstm = conn.prepareStatement(query);
+		pstm.execute(); //managingDB 의 time_in, time_out 컬럼의 값을 NULL로 만듭니다.
+		query = "update managingDB set status=9 where time_in is null and time_out is null;";
+		pstm = conn.prepareStatement(query);
+		pstm.execute(); //managingDB 의 status 컬럼의 값을 default로 설정합니다.
+		query = "delete from attendanceDB where date_format(date,'%Y-%m-%d')=?";
+		pstm = conn.prepareStatement(query);
+		pstm.setString(1,curDate);
+		pstm.execute(); //attendanceDB 의 출석내역을 삭제합니다.
 	}else{
 		out.println("설정 사항이 없습니다. 시간을 설정해 주세요.");
 	}

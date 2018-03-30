@@ -15,8 +15,7 @@
 
 </head>
 <body>
-<h3>학생 정보</h3>
-
+<h1>학생 관리</h1>
 <%
 String _id = "";
 String dept = "";

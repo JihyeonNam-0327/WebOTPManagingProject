@@ -32,6 +32,7 @@ input.ng-valid {
 </style>
 </head>
 <body ng-app="myApp">
+<h1>학생 등록</h1>
 <!-- TODO : Ajax 학번, 비밀번호 실시간 체크 -->
 <br><br>
 <form name="myForm" ng-controller="myCtrl">
@@ -57,7 +58,7 @@ input.ng-valid {
 </div>
 <div class="form-group center-block">
 	<label>비밀번호 : </label><br>
-	<input type="password" name="password" class="form-control input-lg" name="pwd" id="pwd" onkeyup="checkPwd()" ng-model="user.password" ng-required="true" ng-minlength="8"/>
+	<input type="password" name="password" class="form-control input-lg" id="pwd" onkeyup="checkPwd()" ng-model="user.password" ng-required="true" ng-minlength="8"/>
 	<div ng-show="myForm.password.$error.minlength"  class="form-control alert alert-light" role="alert">비밀번호는 최소 8글자 이상 입력해 주세요.</div>
 </div>
 <div class="form-group center-block">
@@ -115,10 +116,7 @@ angular.module('myApp', [])
 		});
     };
 	
-	
-	
 	$scope.deptList = ["데이터융합SW과", "임베디드시스템과", "생명의료시스템과"];
-	
 	
 }]);
 
@@ -209,6 +207,7 @@ $("#button2").click(function() {
 	var dept = $("#dept option:selected").text();
 	var id = $("#_id").val();
 	var name = $("#name").val();
+	var password = $("#pwd").val();
 	var status_id = $("#result_id_msg").text();
 	var status_pw = $("#checkPwd").text();
 	var phone = $("#phone").val();
@@ -216,7 +215,7 @@ $("#button2").click(function() {
 	phone = phone.replace(/-/gi, "");
 
 	if(status_id != "사용 가능한 학번입니다." || status_pw != "암호를 확인했습니다." || name == "" 
-	  || phone.length < 10 || email == "" || id.length > 10 || dept == "" ){
+	  || phone.length < 10 || email == "" || id.length > 10 || dept == "" || password.length < 8 ){
 		alert("회원가입 양식에 맞추어 작성해 주세요. \n 혹시 빈 칸이 있는 지 확인해 보세요.");
 		return;
 	}else{

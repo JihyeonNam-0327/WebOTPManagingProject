@@ -73,16 +73,17 @@ try{
 		   + "ON UPDATE CASCADE)"
 		   + "ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 	pstm = conn.prepareStatement(query);
-	pstm.execute();		// managingDB 테이블 생성
+	pstm.execute();		// managingDB 테이블 생성 
+	/* 9: 초기값(체크이전상태), 0: 입실완료, 1: 지각, 2: 조퇴, 3: 퇴실, 4: 결석, 5: 정상출석(입/퇴실 모두체크) */
 	
 	out.println("managingDB 테이블 생성 완료");
 	
 	query = "create table attendanceDB("
+		  + "date TIMESTAMP default current_timestamp,"
 		  + "_id int(10),"
 		  + "time_in TIME,"
 		  + "time_out TIME,"
-		  + "status int(1),"
-		  + "date TIMESTAMP default current_timestamp)"
+		  + "status int(1))"
 		  + "ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 	pstm = conn.prepareStatement(query);
 	pstm.execute();		// attendanceDB 테이블 생성
@@ -90,56 +91,65 @@ try{
 	out.println("attendanceDB 테이블 생성 완료");
 	
 	query = "CREATE EVENT IF NOT EXISTS evt1_makestatus"
-		  + "ON SCHEDULE EVERY '1' DAY"
-		  + "STARTS '2018-03-28 23:59:00'"
-		  + "COMMENT 'Make status at 23:59 daily'"
-		  + "DO"
-		  + "UPDATE KOPOCTC.managingDB SET status = 4 WHERE time_in is null AND time_out is null;";
+		  + " ON SCHEDULE EVERY '1' DAY"
+		  + " STARTS '2018-03-28 23:59:00'"
+		  + " COMMENT 'Make status at 23:59 daily'"
+		  + " DO"
+		  + " UPDATE KOPOCTC.managingDB SET status = 4 WHERE time_in is null AND time_out is null;";
 	pstm = conn.prepareStatement(query);
 	pstm.execute();		// 이벤트 생성 - evt1_makestatus
 	
 	query = "CREATE EVENT IF NOT EXISTS evt2_makestatus"
-		  + "ON SCHEDULE EVERY '1' DAY"
-		  + "STARTS '2018-03-28 23:59:02'"
-		  + "COMMENT 'Make status at 23:59 daily'"
-		  + "DO"
-		  + "UPDATE KOPOCTC.managingDB SET status = 2 WHERE time_in is not null AND time_out is null;";
+		  + " ON SCHEDULE EVERY '1' DAY"
+		  + " STARTS '2018-03-28 23:59:02'"
+		  + " COMMENT 'Make status at 23:59 daily'"
+		  + " DO"
+		  + " UPDATE KOPOCTC.managingDB SET status = 2 WHERE time_in is not null AND time_out is null;";
 	pstm = conn.prepareStatement(query);
 	pstm.execute();		// 이벤트 생성 - evt2_makestatus
 	
 	query = "CREATE EVENT IF NOT EXISTS evt3_makestatus"
-		  + "ON SCHEDULE EVERY '1' DAY"
-		  + "STARTS '2018-03-28 23:59:04'"
-		  + "COMMENT 'Make status at 23:59 daily'"
-		  + "DO"
-		  + "UPDATE KOPOCTC.managingDB SET status = 1 WHERE time_in is null AND time_out is not null;"
+		  + " ON SCHEDULE EVERY '1' DAY"
+		  + " STARTS '2018-03-28 23:59:04'"
+		  + " COMMENT 'Make status at 23:59 daily'"
+		  + " DO"
+		  + " UPDATE KOPOCTC.managingDB SET status = 1 WHERE time_in is null AND time_out is not null;";
 	pstm = conn.prepareStatement(query);
 	pstm.execute();		// 이벤트 생성 - evt3_makestatus
 	
 	query = "CREATE EVENT IF NOT EXISTS evt4_makestatus"
-		  + "ON SCHEDULE EVERY '1' DAY"
-		  + "STARTS '2018-03-28 23:59:06'"
-		  + "COMMENT 'Make status at 23:59 daily'"
-		  + "DO"
-		  + "UPDATE KOPOCTC.managingDB SET status = 5 WHERE time_in is not null AND time_out is not null;";
+		  + " ON SCHEDULE EVERY '1' DAY"
+		  + " STARTS '2018-03-28 23:59:06'"
+		  + " COMMENT 'Make status at 23:59 daily'"
+		  + " DO"
+		  + " UPDATE KOPOCTC.managingDB SET status = 5 WHERE time_in is not null AND time_out is not null;";
 	pstm = conn.prepareStatement(query);
 	pstm.execute();		// 이벤트 생성 - evt4_makestatus
 	
 	query = "CREATE EVENT IF NOT EXISTS evt_save"
-		  + "ON SCHEDULE EVERY '1' DAY"
-		  + "STARTS '2018-03-28 23:59:10'"
-		  + "COMMENT 'Sate status at 23:59 daily'"
-		  + "DO"
-		  + "INSERT INTO KOPOCTC.attendanceDB(_id,time_in,time_out,status,date) SELECT _id,time_in,time_out,status,date FROM KOPOCTC.managingDB;";
+		  + " ON SCHEDULE EVERY '1' DAY"
+		  + " STARTS '2018-03-28 23:59:10'"
+		  + " COMMENT 'Sate status at 23:59 daily'"
+		  + " DO"
+		  + " INSERT INTO KOPOCTC.attendanceDB(_id,time_in,time_out,status,date) SELECT _id,time_in,time_out,status,date FROM KOPOCTC.managingDB;";
 	pstm = conn.prepareStatement(query);
 	pstm.execute();		// 이벤트 생성 - evt_save
 	
 	query = "CREATE EVENT IF NOT EXISTS evt_delete"
-		  + "ON SCHEDULE EVERY '1' DAY"
-		  + "STARTS '2018-03-28 23:58:20'"
-		  + "COMMENT 'Delete managingDB at 23:59 daily'"
-		  + "DO"
-		  + "DELETE FROM KOPOCTC.managingDB;";
+		  + " ON SCHEDULE EVERY '1' DAY"
+		  + " STARTS '2018-03-28 23:58:20'"
+		  + " COMMENT 'Delete managingDB at 23:59 daily'"
+		  + " DO"
+		  + " DELETE FROM KOPOCTC.managingDB;";
+	pstm = conn.prepareStatement(query);
+	pstm.execute();		// 이벤트 생성 - evt_delete
+	
+	query = "CREATE EVENT IF NOT EXISTS evt_insert"
+		  + " ON SCHEDULE EVERY '1' DAY"
+		  + " STARTS '2018-03-29 00:00:01'"
+		  + " COMMENT 'Insert into managingDB at 23:59 daily'"
+		  + " DO"
+		  + " INSERT INTO KOPOCTC.managingDB(_id) SELECT _id FROM KOPOCTC.otpDB;";
 	pstm = conn.prepareStatement(query);
 	pstm.execute();		// 이벤트 생성 - evt_delete
 	

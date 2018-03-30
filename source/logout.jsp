@@ -11,14 +11,11 @@
 	
 	String loginOK="";
 	String jumpURL="login.jsp?jump=login.jsp";
-	
+	String checkID = "";
+	checkID = (String)session.getAttribute("login_ok");
 	//login값이 없는지, login_ok 키의 value값이 yes가 맞는지 확인합니다.
 	loginOK = (String)session.getAttribute("login_ok");
-	if(loginOK==null){
-		response.sendRedirect(jumpURL);
-		return;
-	}
-	if(!loginOK.equals("yes")){
+	if(loginOK==null || !loginOK.equals(checkID)){
 		response.sendRedirect(jumpURL);
 		return;
 	}

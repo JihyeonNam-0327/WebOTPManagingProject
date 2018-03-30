@@ -21,7 +21,7 @@ a:active {text-decoration:none;}
 <center>
 <table cellpadding=0 cellspacing=0 border=0>
 	<tr>
-		<td width=200><a href='main.jsp' target=main ><img src=logo.jpg width=170 border=0></a>
+		<td width=200><a href='main.jsp' target=main ><img src="img/logo.jpg" width=170 border=0></a>
 		</td>			
 		<td width=720 style='text-align:left;'>
 		<a href='setting.jsp' target=main style='a.no-uline { text-decoration:none; }'>
@@ -39,19 +39,9 @@ a:active {text-decoration:none;}
 		<a href='test.jsp' target=main>
 		 | 바코드 테스트 | 
 		</a>
-		<%
-		String loginOK=null;
-		//login값이 없는지, login_ok 키의 value값이 yes가 맞는지 확인합니다.
-		loginOK = (String)session.getAttribute("login_ok");
-		if(loginOK==null || !loginOK.equals("yes")){	//일반인
-		}else{	//로그인 한 경우
-		%>
 		<a href='logout.jsp' target='main'>
 		<button>로그아웃</button>	
 		</a>
-		<%
-		}
-		%>
 		</td>
 	</tr>
 </table>

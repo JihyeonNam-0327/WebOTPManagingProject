@@ -8,7 +8,9 @@
 <%
 //세션을 체크해서 없다면 로그인창으로 보냅니다. 그리고 로그인이 되면 자기 자신에게 와야하므로 
 //자기 자신의 url을 써주어야 합니다. 여기에선 login_check.jsp
-
+	String id = request.getParameter("id");
+	String checkID = "";
+	checkID = (String)session.getAttribute("login_ok");
 	String loginOK=null;
 	String jumpURL="login.jsp?jump=login_check.jsp";
 	
@@ -18,14 +20,15 @@
 		response.sendRedirect(jumpURL);
 		return;
 	}
-	if(!loginOK.equals("yes")){
+	if(!loginOK.equals(checkID)){
 		response.sendRedirect(jumpURL);
 		return;
 	}
+		
 %>
 <script type="text/javascript"> 
 function goReplace(){
-	window.location.href="test.jsp";
+	window.location.href="test.jsp?id="+<%=id%>;
 }
 </script>
 </head> 
