@@ -3,25 +3,29 @@
 <%
 request.setCharacterEncoding("utf-8");
 String id = request.getParameter("user_id");
-//특수문자 체크
-if(id!=null){
-	id = id.replaceAll("'","&apos;");
-}
-String pass = request.getParameter("user_pwd");
-//특수문자 체크
-if(pass!=null){
-	pass = pass.replaceAll("'","&apos;");
-}
-boolean bPassCk=false;	//기본값은 false
 
-try{
+//out.println(":::::::: 문서시작 :::::::::::");
+//out.println("아이디랍시고 받은 값 : " + id);
+	//특수문자 체크
+	if(id!=null){
+		
+		id = id.replaceAll("'","&apos;");
+	}
+String pass = request.getParameter("user_pwd");
+	//특수문자 체크
+	if(pass!=null){
+		pass = pass.replaceAll("'","&apos;");
+	}
+	boolean bPassCk=false;	//기본값은 false
+//out.println("비밀번호랍시고 받은 값 : " + pass);
+
+try{	
 	Class.forName("com.mysql.jdbc.Driver");
 	Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/KOPOCTC","root","alslf2gk");
 	ResultSet rset = null;
-	String query = null;
 	PreparedStatement pstm = null;
+	String query = null;
 	
-	//로그인 체크
 	String admin_id = null;
 	String admin_pw = null;
 	int howmanytimes = 0;
@@ -46,6 +50,7 @@ try{
 			pstm = conn.prepareStatement(query);
 			pstm.setString(1, id);
 			pstm.execute();
+			
 		}else{
 			bPassCk=false;
 			rset.close();
@@ -92,83 +97,77 @@ try{
 	//아이디와 비밀번호 체크가 끝나면 세션을 기록하고 점프합니다.
 	if(bPassCk){
 		session.setAttribute("login_ok",id);	//key값은 login_ok, 이에 해당하는 value는 id
-
-		//로그인 성공했을 때 결과를 XML로 출력
-
-		/* 랜덤값 생성 */
-		int max = 999999999;
-		int min = 0;
-		int totalCount = 0;
-		int status = 9;
+		//out.println(id+",");
+		//out.println(pass+",");
+		//out.println("성공");
 		
-		/* otp 데이터 생성 (1인 당 1개를 생성) */
-		/* Math.random() 은 double 타입의 0.0 이상 1.0 미만의 랜덤한 숫자를 리턴한다. */
-		double random = Math.random() * (max - min + 1);
-		int otpForId = (int) random;
-		
-		query = "update otpDB set otp=? where _id=?;";
+		//로그인 성공했을 시 XML 로 DB 내용 출력
+		int size = 0;
+		query = "select count(_id) from memberDB;";
 		pstm = conn.prepareStatement(query);
-		pstm.setInt(1, otpForId);
-		pstm.setString(2, id);
-		pstm.execute();	
-		
-		String name = "";
-		String dept = "";
-		String otp = "";
-		
-		/* id에 해당하는 otp READ */
-		query = "select B.name,B.dept,A.otp from memberDB B, otpDB A where A._id=? and B._id=?;";
-		pstm = conn.prepareStatement(query);
-		pstm.setString(1, id);
-		pstm.setString(2, id);
 		rset = pstm.executeQuery();
-		
 		while(rset.next()){
-			name = rset.getString(1);
-			dept = rset.getString(2);
-			otp = rset.getString(3);
+			size = rset.getInt(1);
 		}
 		
+		String[] id_managing = new String[size];
+		String[] time_in = new String[size];
+		String[] time_out = new String[size];
+		String[] status = new String[size];
+		
+		//일일 입/퇴실 현황 확인
+		query = "select _id,time_in,time_out,status from managingDB;";
+		pstm = conn.prepareStatement(query);
+		rset = pstm.executeQuery();
+		int i = 0;
+		while(rset.next()){
+			id_managing[i] = rset.getString(1);
+			time_in[i] = rset.getString(2);
+			time_out[i] = rset.getString(3);
+			status[i] = rset.getString(4);
+			i++;
+		}
+
 		//xml 방식으로 값 보내기
 		response.setContentType("text/xml;charset=utf-8");
 		PrintWriter pw = response.getWriter();
 		pw.print("<?xml version='1.0' encoding='UTF-8' ?>");
 		pw.print("<datas>");
+		for(int j = 0; j < size; j++){
 			pw.print("<data>");
-				pw.print("<name>");
-				pw.print(name);
-				pw.print("</name>");
-				pw.print("<dept>");
-				pw.print(dept);
-				pw.print("</dept>");
-				pw.print("<otp>");
-				pw.print(otp);
-				pw.print("</otp>");
+			pw.print("<id>");
+			pw.print(id_managing[j]);
+			pw.print("</id>");
+			pw.print("<time_in>");
+			pw.print(time_in[j]);
+			pw.print("</time_in>");
+			pw.print("<time_out>");
+			pw.print(time_out[j]);
+			pw.print("</time_out>");
+			pw.print("<status>");
+			pw.print(status[j]);
+			pw.print("</status>");
 			pw.print("</data>");
+		}
 		pw.print("</datas>");
-		
-		rset.close();
-		pstm.close();
-		conn.close(); 
-	
+				
 	}else{
 		if(howmanytimes < 5){
 			//out.println("아이디 또는 패스워드 오류입니다.");
+			
 		}else{
 			//out.println("비밀번호를 5회 이상 잘못 입력하셨습니다.");
 			//out.println("해당 아이디의 로그인이 제한되었습니다.");
 		}
 	}
-
+	
+	rset.close();
+	pstm.close();
+	conn.close();
+	
 }catch(SQLException e){
-	if(e.getMessage().contains("Duplicate")){
-		out.println(e.toString());
-	} else {
-		out.println(e.toString());
-	}
+	out.println(e.toString());
 }catch(Exception e){
 	out.println(e.toString());
 }
-				
-	
 %>

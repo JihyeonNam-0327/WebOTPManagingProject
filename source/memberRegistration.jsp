@@ -33,7 +33,6 @@ input.ng-valid {
 </head>
 <body ng-app="myApp">
 <h1>학생 등록</h1>
-<!-- TODO : Ajax 학번, 비밀번호 실시간 체크 -->
 <br><br>
 <form name="myForm" ng-controller="myCtrl">
 <div class="form-group center-block">

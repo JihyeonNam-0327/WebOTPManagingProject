@@ -59,7 +59,7 @@
 <style>
 .img{
     position: relative;
-    background-image: url(.img/background.jpg);
+    background-image: url(./img/background.jpg);
     height: 100vh;
     background-size: cover;
 }

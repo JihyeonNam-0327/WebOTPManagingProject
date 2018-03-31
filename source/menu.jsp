@@ -36,8 +36,8 @@ a:active {text-decoration:none;}
 		<a href='manageMonth.jsp' target=main>
 		 | 월간 출퇴근 현황 
 		</a>
-		<a href='test.jsp' target=main>
-		 | 바코드 테스트 | 
+		<a href='barcode/BarcodeRead.jsp' target=main>
+		 | 바코드 체크 테스트 | 
 		</a>
 		<a href='logout.jsp' target='main'>
 		<button>로그아웃</button>	

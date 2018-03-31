@@ -38,9 +38,10 @@
 	//get방식으로 url에서 받아온 jump주소입니다. (login_check.jsp) 
 	String jump = request.getParameter("jump");
 	if(jump==null){
-		jump = "login_check.jsp";
+		jump = "main.jsp";
 	}
 %>
+<script>alert("뭐냐"+<%=jump%>);</script>
 <center>
 <br><br><br><br><br>
 <p>로그인</p>
@@ -59,9 +60,10 @@
 		</td>
 	</tr>
 </table>
-<input type=submit value=로그인 />
-<!--화면에 나타나진 않지만 jump라는 이름의 파라메터를 post방식으로 건네줍니다. value값은 (login_check.jsp)-->
+<!--화면에 나타나진 않지만 jump라는 이름의 파라메터를 post방식으로 건네줍니다.-->
 <input type='hidden' name='jump' value='<%=jump%>' />
+
+<input type=submit value=로그인 />
 </form>
 </center>
 </body>
