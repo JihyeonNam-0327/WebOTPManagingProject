@@ -130,8 +130,8 @@ a:hover{
 %>
 </head>
 <body>
-<h1>월간 출퇴근 현황</h1>
-<table border=1 cellspacing=0>
+<h1 align=center>월간 출결 현황</h1>
+<table border=1 cellspacing=0 align=center>
 <!-- TODO : 학번을 클릭하면 그 학생의 월별 출석현황을 보여줄 것 -->
 <%
 request.setCharacterEncoding("utf-8");
@@ -146,7 +146,7 @@ name = request.getParameter("name");
 if(name!=null){
 	name=new String(name.getBytes("8859_1"),"UTF-8");
 }
-out.println("<h3>"+name+"("+id+")"+"의 월간 출퇴근 현황입니다.</h3>");
+out.println("<h3 align=center>"+name+"("+id+")"+"의 월간 출결 현황입니다.</h3>");
 
 int status = 0;
 String resultStatus = "";
@@ -168,7 +168,7 @@ try{
 	pstm.setString(1,id);
 	rset = pstm.executeQuery();
 	if(!rset.next()){
-		out.println("월간 출퇴근 현황이 아직 등록되지 않았습니다.");
+		out.println("<center>월간 출퇴근 현황이 아직 등록되지 않았습니다.</center>");
 		rset.close();
 		pstm.close();
 		conn.close();
@@ -176,7 +176,7 @@ try{
 	}else{
 		size = rset.getInt(1);
 		if(size == 0){
-			out.println("월간 출퇴근 현황이 아직 등록되지 않았습니다.");
+			out.println("<center>월간 출퇴근 현황이 아직 등록되지 않았습니다.</center>");
 			rset.close();
 			pstm.close();
 			conn.close();

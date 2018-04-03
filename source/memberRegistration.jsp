@@ -32,7 +32,7 @@ input.ng-valid {
 </style>
 </head>
 <body ng-app="myApp">
-<h1>학생 등록</h1>
+<h1 align=center>학생 등록</h1>
 <br><br>
 <form name="myForm" ng-controller="myCtrl">
 <div class="form-group center-block">

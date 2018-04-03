@@ -51,7 +51,7 @@ try{
 		out.println("학생 정보가 없습니다. 아래 버튼을 눌러 학생을 등록해 주세요.");
 	}else{
 	%>
-	<table border=1 cellspacing=0 align=center style="text-align:center;">
+	<table border=1 cellspacing=0 align=center style="text-align:center;" width=400>
 	<tr>
 		<th>학과</th><th>이름</th><th>학번</th><th>현황 확인</th>
 	</tr>

@@ -58,12 +58,12 @@ try{
 		<tr><td>
 		<b>현재 설정된 입/퇴실 시간 및 OTP(QR코드) 유효시간 입니다.</b>
 		<br><br>
-		<table border=1 cellspacing=0>
+		<table border=1 cellspacing=0 align=center width=500 style="text-align:center;">
 		<tr>
-			<th>입실 시작 시간</th><th>입실 유효시간</th><th>퇴실 시작 시간</th><th>퇴실 유효시간</th><th>바코드 유효시간</th>
+			<td>입실 시작 시간</td><td>입실 유효시간</td><td>퇴실 시작 시간</td><td>퇴실 유효시간</td><td><b>바코드 유효시간</b></td>
 		</tr>
 		<tr>
-			<td><%=attd%></td><td><%=attd_interval%></td><td><%=leave_%></td><td><%=leave_interval%></td><td><%=otp_interval%></td>
+			<td><%=attd%></td><td><%=attd_interval%></td><td><%=leave_%></td><td><%=leave_interval%></td><td><b><%=otp_interval%></b></td>
 		</tr>
 		</table>
 		<br><br>
@@ -90,14 +90,16 @@ try{
 }
 %>
 <br><br>
-<form method="post" >
+<div style="margin:auto; width:500px;">
+<form method="post">
 입실 시작 시간 : <input name='attd' type=time required/> 부터 <input name='attd_interval' style="width:50px;"  type=number required/> 분 동안으로 설정
 <br>
 퇴실 시작 시간 : <input name='leave_' type=time required/> 부터 <input name='leave_interval' style="width:50px;"  type=number required/> 분 동안으로 설정
 <br><br>
-OTP 유효 시간 : OTP 생성 후 <input name='otp_interval' type=number style="width:50px;" required/> 분 뒤에 사라지도록 설정합니다.
+OTP 유효 시간 : OTP 생성 후 <input name='otp_interval' type=number style="width:50px;" required/> 분 동안 유효하도록 설정.
  &nbsp; <input type=submit name='setTime' value='시간 설정' formaction="writeTime.jsp"/>
 <br><br><br>
+</div>
 </form>
 <b>관리자 권한으로 OTP 일괄 생성하기</b>
 <input type=button name='makeOTP' value='OTP 생성' onclick='location.href="writeOTP.jsp"'/>

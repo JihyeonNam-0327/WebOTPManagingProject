@@ -24,8 +24,8 @@
 </div>
 <input type="submit" value="인증" id="button1">
 </form>
-<div id="content"></div>
-<p id="resultMessage"></p>
+<div id="content" style='margin:auto;'></div>
+<p align='center' id="resultMessage"></p>
 <script type="text/javascript">
 angular.module('myApp', [])
 .controller('myCtrl', ['$scope', function($scope) {

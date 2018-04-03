@@ -50,20 +50,20 @@ a:hover{
 	private String traverseDate(String type, int year, int month, String id){
 		String href = "";
 		if(type.equals("upYear")){
-			href = "./manageMonthDetail.jsp?year=" + (year+1) + "&month=" + month + "&id=" + id;
+			href = "./XMLforMonthlyCheck.jsp?year=" + (year+1) + "&month=" + month + "&id=" + id;
 		}else if(type.equals("downYear")){
-			href = "./manageMonthDetail.jsp?year=" + (year-1) + "&month=" + month + "&id=" + id;
+			href = "./XMLforMonthlyCheck.jsp?year=" + (year-1) + "&month=" + month + "&id=" + id;
 		}else if(type.equals("upMonth")){
 			if(month == 11){
-				href = "./manageMonthDetail.jsp?year=" + (year+1) + "&month=0" + "&id=" + id;
+				href = "./XMLforMonthlyCheck.jsp?year=" + (year+1) + "&month=0" + "&id=" + id;
 			}else{
-				href = "./manageMonthDetail.jsp?year=" + year + "&month=" + (month+1) + "&id=" + id;
+				href = "./XMLforMonthlyCheck.jsp?year=" + year + "&month=" + (month+1) + "&id=" + id;
 			}
 		}else if(type.equals("downMonth")){
 			if(month == 0){
-				href = "./manageMonthDetail.jsp?year=" + (year-1) + "&month=11" + "&id=" + id;
+				href = "./XMLforMonthlyCheck.jsp?year=" + (year-1) + "&month=11" + "&id=" + id;
 			}else{
-				href = "./manageMonthDetail.jsp?year=" + year + "&month=" + (month-1) + "&id=" + id;
+				href = "./XMLforMonthlyCheck.jsp?year=" + year + "&month=" + (month-1) + "&id=" + id;
 			}
 		}
 		return href;
@@ -129,8 +129,8 @@ a:hover{
 %>
 </head>
 <body>
-<h1>월간 출퇴근 현황</h1>
-<table border=1 cellspacing=0>
+<h1 align=center>월간 출결 현황</h1>
+<table border=1 cellspacing=0 align=center>
 <!-- TODO : 학번을 클릭하면 그 학생의 월별 출석현황을 보여줄 것 -->
 <%
 request.setCharacterEncoding("utf-8");
@@ -144,6 +144,7 @@ if(id == null){
 
 int status = 0;
 String resultStatus = "";
+String name = "";
 
 try{
 	Class.forName("com.mysql.jdbc.Driver");
@@ -176,6 +177,16 @@ try{
 			return;
 		}
 	}
+	
+	query = "select name from memberDB where _id=?";
+	pstm = conn.prepareStatement(query);
+	pstm.setString(1,id);
+	rset = pstm.executeQuery();
+	while(rset.next()){
+		name = rset.getString(1);
+	}
+	
+	out.println("<center>"+name+" 님의 월간 출결 현황입니다.</center><br>");
 	
 	String[][] attd_status = new String[2][size];	//출결 현황을 저장할 배열 선언, 지난 번 예약 시스템과 다른 점은 이전 기록을 보아야 한다는 것입니다!
 	query = "select date, status from attendanceDB where _id=?;"; //날짜가 가장 가까운 날짜부터 출력! (우선은)
