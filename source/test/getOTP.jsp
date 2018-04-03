@@ -9,7 +9,7 @@ if(_id==null){
 
 try{
 	Class.forName("com.mysql.jdbc.Driver");
-	Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/KOPOCTC","root","alslf2gk");
+	Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/iamhpd7","iamhpd7","ctc@kopo");
 	ResultSet rset = null;
 	String query = null;
 	PreparedStatement pstm = null;

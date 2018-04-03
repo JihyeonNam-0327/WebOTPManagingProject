@@ -16,7 +16,7 @@ boolean bPassCk=false;	//기본값은 false
 
 try{	
 	Class.forName("com.mysql.jdbc.Driver");
-	Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/KOPOCTC","root","alslf2gk");
+	Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/iamhpd7","iamhpd7","ctc@kopo");
 	ResultSet rset = null;
 	PreparedStatement pstm = null;
 	String query = null;
@@ -93,55 +93,45 @@ try{
 		session.setAttribute("login_ok",id);	//key값은 login_ok, 이에 해당하는 value는 id
 
 		//로그인 성공했을 시 XML 로 DB 내용 출력
-		int size = 0;
-		query = "select count(_id) from memberDB;";
-		pstm = conn.prepareStatement(query);
-		rset = pstm.executeQuery();
-		while(rset.next()){
-			size = rset.getInt(1);
-		}
-		
-		String[] id_managing = new String[size];
-		String[] time_in = new String[size];
-		String[] time_out = new String[size];
-		String[] status = new String[size];
+		String id_managing = "";
+		String time_in = "";
+		String time_out = "";
+		String status = "";
 		
 		//일일 입/퇴실 현황 확인
-		query = "select _id,time_in,time_out,status from managingDB;";
+		query = "select _id,time_in,time_out,status from managingDB where _id=?;";
 		pstm = conn.prepareStatement(query);
+		pstm.setString(1,id);
 		rset = pstm.executeQuery();
-		int i = 0;
+		
 		while(rset.next()){
-			id_managing[i] = rset.getString(1);
-			time_in[i] = rset.getString(2);
-			time_out[i] = rset.getString(3);
-			status[i] = rset.getString(4);
-			i++;
+			id_managing = rset.getString(1);
+			time_in = rset.getString(2);
+			time_out = rset.getString(3);
+			status = rset.getString(4);
 		}
-
+		
 		//xml 방식으로 값 보내기
 		response.setContentType("text/xml;charset=utf-8");
 		PrintWriter pw = response.getWriter();
 		pw.print("<?xml version='1.0' encoding='UTF-8' ?>");
 		pw.print("<datas>");
-		for(int j = 0; j < size; j++){
 			pw.print("<data>");
-			pw.print("<id>");
-			pw.print(id_managing[j]);
-			pw.print("</id>");
-			pw.print("<time_in>");
-			pw.print(time_in[j]);
-			pw.print("</time_in>");
-			pw.print("<time_out>");
-			pw.print(time_out[j]);
-			pw.print("</time_out>");
-			pw.print("<status>");
-			pw.print(status[j]);
-			pw.print("</status>");
+				pw.print("<id>");
+				pw.print(id_managing);
+				pw.print("</id>");
+				pw.print("<time_in>");
+				pw.print(time_in);
+				pw.print("</time_in>");
+				pw.print("<time_out>");
+				pw.print(time_out);
+				pw.print("</time_out>");
+				pw.print("<status>");
+				pw.print(status);
+				pw.print("</status>");
 			pw.print("</data>");
-		}
 		pw.print("</datas>");
-				
+	
 	}else{
 		if(howmanytimes < 5){
 			//out.println("아이디 또는 패스워드 오류입니다.");

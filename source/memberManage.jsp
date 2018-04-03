@@ -6,13 +6,11 @@
 <head>
 <!-- 합쳐지고 최소화된 최신 CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-
 <!-- 부가적인 테마 -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-
 </head>
 <body>
 <% request.setCharacterEncoding("utf-8");
@@ -29,7 +27,8 @@ if(loginOK==null || !loginOK.equals(checkID)){
 	return;
 }
 %>
-<h1>학생 관리</h1>
+<h1 align=center>학생 관리</h1>
+<br>
 <%
 String _id = "";
 String dept = "";
@@ -37,7 +36,7 @@ String name = "";
 
 try{
 	Class.forName("com.mysql.jdbc.Driver");
-	Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/KOPOCTC","root","alslf2gk");
+	Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/iamhpd7","iamhpd7","ctc@kopo");
 	ResultSet rset = null;
 	ResultSet rset2 = null;
 	String query = null;
@@ -50,7 +49,7 @@ try{
 		out.println("학생 정보가 없습니다. 아래 버튼을 눌러 학생을 등록해 주세요.");
 	}else{
 	%>
-		<table border=1 cellspacing=0>
+		<table border=1 cellspacing=0 align=center width=400 style="text-align:center;">
 		<tr>
 			<th>학번</th><th>학과</th><th>이름</th><th>관리</th>
 		</tr>	
@@ -88,6 +87,7 @@ try{
 }
 %>
 </table>
+<br>
 <button class='btn center-block btn-info' id="buttonToRegi">추가 등록</button>
 <script>
 $(function(){

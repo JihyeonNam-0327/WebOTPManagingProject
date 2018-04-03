@@ -15,11 +15,11 @@
 <head>
 </head>
 <body ng-app="myApp">
-<h1>바코드 체크 테스트</h1>
-<br><br>
-<form name="myForm" ng-controller="myCtrl">
+<h1 align=center>출석 체크</h1>
+<br>
+<form name="myForm" ng-controller="myCtrl" align=center>
 <div class="form-group center-block">
-	<label>바코드 : </label><br>
+	<label>바코드 : </label> 
 	<input type="number" id="barcode" ng-change="myFunc()" ng-model="myValue" autofocus>
 </div>
 <input type="submit" value="인증" id="button1">
@@ -52,16 +52,16 @@ angular.module('myApp', [])
 				var date = $(data).find("date").text();
 								
 				if(check == "1") {
-					$("#resultMessage").text("정상적으로 입실 처리 되었습니다.").css("color","red");
-					$('#content').text(dept+" "+name+ "(" +id+ ") 님이 " +date+ " 에 바코드를 체크했습니다.");
+					$("#resultMessage").text("정상적으로 출근 처리 되었습니다.").css("color","red");
+					$('#content').text(dept+" "+name+ "(" +id+ ") 님이 " +date+ " 에 체크했습니다.");
 				}else if(check == "2"){
-					$("#resultMessage").text("정상적으로 퇴실 처리 되었습니다.").css("color","red");
-					$('#content').text(dept+" "+name+ "(" +id+ ") 님이 " +date+ " 에 바코드를 체크했습니다.");
+					$("#resultMessage").text("정상적으로 퇴근 처리 되었습니다.").css("color","red");
+					$('#content').text(dept+" "+name+ "(" +id+ ") 님이 " +date+ " 에 체크했습니다.");
 				}else if(check == "3"){
 					$("#resultMessage").text("하지만 인증 가능한 시간이 아닙니다.").css("color","black");
-					$('#content').text(dept+" "+name+ "(" +id+ ") 님이 " +date+ " 에 바코드를 체크했습니다.");
+					$('#content').text(dept+" "+name+ "(" +id+ ") 님이 " +date+ " 에 체크했습니다.");
 				}else if(check == "0"){
-					$("#resultMessage").text("에러입니다. 로그를 확인하세요.").css("color","blue");
+					$("#resultMessage").text("해당 바코드가 유효하지 않습니다.").css("color","blue");
 				}
 								
 				$('#barcode').val('');

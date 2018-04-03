@@ -134,6 +134,8 @@ a:hover{
 <table border=1 cellspacing=0>
 <!-- TODO : 학번을 클릭하면 그 학생의 월별 출석현황을 보여줄 것 -->
 <%
+request.setCharacterEncoding("utf-8");
+
 String id = "";
 String name = "";
 id = request.getParameter("id");
@@ -141,14 +143,17 @@ if(id == null){
 	id = "2018231001";
 }
 name = request.getParameter("name");
+if(name!=null){
+	name=new String(name.getBytes("8859_1"),"UTF-8");
+}
 out.println("<h3>"+name+"("+id+")"+"의 월간 출퇴근 현황입니다.</h3>");
 
 int status = 0;
 String resultStatus = "";
 
-//try{
+try{
 	Class.forName("com.mysql.jdbc.Driver");
-	Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/KOPOCTC","root","alslf2gk");
+	Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/iamhpd7","iamhpd7","ctc@kopo");
 	ResultSet rset = null;
 	PreparedStatement pstm = null;
 	String query = null;
@@ -170,6 +175,13 @@ String resultStatus = "";
 		return;
 	}else{
 		size = rset.getInt(1);
+		if(size == 0){
+			out.println("월간 출퇴근 현황이 아직 등록되지 않았습니다.");
+			rset.close();
+			pstm.close();
+			conn.close();
+			return;
+		}
 	}
 	
 	String[][] attd_status = new String[2][size];	//출결 현황을 저장할 배열 선언, 지난 번 예약 시스템과 다른 점은 이전 기록을 보아야 한다는 것입니다!
@@ -292,11 +304,11 @@ String resultStatus = "";
 	rset.close();
 	pstm.close();
 	conn.close();
-/*}catch(SQLException e){
+}catch(SQLException e){
 	out.println("SQL에러입니다 == > "+e.toString());
 }catch(Exception e){
 	out.println("JAVA 에러입니다 == > "+e.toString());
-}*/
+}
 %>
 </table>
 </body>

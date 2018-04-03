@@ -4,6 +4,13 @@
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ page import="java.sql.*, javax.sql.*, java.io.*, java.util.*, java.math.*, java.text.*" %>
 <head>
+<!-- 합쳐지고 최소화된 최신 CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<!-- 부가적인 테마 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 </head>
 <body>
 <% request.setCharacterEncoding("utf-8");%>
@@ -21,21 +28,23 @@
 		return;
 	}
 %>
-<h1>입/퇴실 시간 설정</h1>
+<h1 align=center>입/퇴실 시간 설정</h1>
+<br>
 <%
 String attd = "";
 String attd_interval = "";
 String leave_ = "";
 String leave_interval = "";
+String otp_interval = "";
 
 try{
 	Class.forName("com.mysql.jdbc.Driver");
-	Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/KOPOCTC","root","alslf2gk");
+	Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/iamhpd7","iamhpd7","ctc@kopo");
 	ResultSet rset = null;
 	String query = null;
 	PreparedStatement pstm = null;
 	
-	query = "select attd, attd_interval, leave_, leave_interval from sysMaster;";
+	query = "select attd, attd_interval, leave_, leave_interval,otp_interval from sysMaster;";
 	pstm = conn.prepareStatement(query);
 	rset = pstm.executeQuery();
 	if(rset.next()){
@@ -43,15 +52,18 @@ try{
 		attd_interval = rset.getString(2);
 		leave_ = rset.getString(3);
 		leave_interval = rset.getString(4);
+		otp_interval = rset.getString(5);
 		%>
+		<table name=myForm align=center border=0 cellspacing=0>
+		<tr><td>
 		<b>현재 설정된 입/퇴실 시간 및 OTP(QR코드) 유효시간 입니다.</b>
 		<br><br>
 		<table border=1 cellspacing=0>
 		<tr>
-			<th>입실 시간</th><th>입실 OTP 유효시간</th><th>퇴실 시간</th><th>퇴실 OTP 유효시간</th>
+			<th>입실 시작 시간</th><th>입실 유효시간</th><th>퇴실 시작 시간</th><th>퇴실 유효시간</th><th>바코드 유효시간</th>
 		</tr>
 		<tr>
-			<td><%=attd%></td><td><%=attd_interval%></td><td><%=leave_%></td><td><%=leave_interval%></td>
+			<td><%=attd%></td><td><%=attd_interval%></td><td><%=leave_%></td><td><%=leave_interval%></td><td><%=otp_interval%></td>
 		</tr>
 		</table>
 		<br><br>
@@ -77,20 +89,19 @@ try{
 	out.println(e.toString());
 }
 %>
-
 <br><br>
 <form method="post" >
-입실 시간 : <input name='attd' type=time required/>
-OPT 유효시간 설정 : <input name='attd_interval' type=number required/> *단위: 분
+입실 시작 시간 : <input name='attd' type=time required/> 부터 <input name='attd_interval' style="width:50px;"  type=number required/> 분 동안으로 설정
 <br>
-퇴실 시간 : <input name='leave_' type=time required/>
-OPT 유효시간 설정 : <input name='leave_interval' type=number required/>
- &nbsp; <input type=submit name='setTime' value='시간 설정' formaction="writeTime.jsp"/><br><br><br>
-<b>OTP 생성하기</b>
-<input type=submit name='makeOTP' value='OTP 생성' formaction="writeOTP.jsp"/>
+퇴실 시작 시간 : <input name='leave_' type=time required/> 부터 <input name='leave_interval' style="width:50px;"  type=number required/> 분 동안으로 설정
+<br><br>
+OTP 유효 시간 : OTP 생성 후 <input name='otp_interval' type=number style="width:50px;" required/> 분 뒤에 사라지도록 설정합니다.
+ &nbsp; <input type=submit name='setTime' value='시간 설정' formaction="writeTime.jsp"/>
+<br><br><br>
 </form>
-<script>
-
-</script>
+<b>관리자 권한으로 OTP 일괄 생성하기</b>
+<input type=button name='makeOTP' value='OTP 생성' onclick='location.href="writeOTP.jsp"'/>
+</td></tr>
+</table>
 </body>
 </html>

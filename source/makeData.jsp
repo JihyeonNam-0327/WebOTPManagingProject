@@ -4,10 +4,108 @@
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ page import="java.sql.*, javax.sql.*, java.io.*, java.util.*, java.math.*, java.text.*" %>
 <head>
+<%@ page import="java.util.Timer" %>
+<%@ page import="java.util.TimerTask" %>
+<%@ page import="java.util.Date" %>
+<%!
+class CounterTimerTask extends java.util.TimerTask {
+	
+	private int count = 0;
+	public CounterTimerTask() {
+	}
+	
+	public void run() {
+		try{
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/iamhpd7","iamhpd7","ctc@kopo");
+		String query = null;
+		ResultSet rset = null;
+		PreparedStatement pstm = null;
+		
+		//전체 회원 수 구하기
+		int mem_num = 0;
+		query = "select count(_id) from memberDB;";
+		pstm = conn.prepareStatement(query);
+		rset = pstm.executeQuery();
+		while(rset.next()){
+			mem_num = rset.getInt(1);
+		}
+		
+		String[] member_id = new String[mem_num];
+		
+		query = "select _id from memberDB;";
+		pstm = conn.prepareStatement(query);
+		rset = pstm.executeQuery();
+		
+		while(rset.next()){
+			member_id[count] = rset.getString(1);
+			count++;
+		}
+		
+		/* TODO : time_in 과 time_out 상태에 따라 결석/지각/출석/조퇴 처리하기 */
+		String time_in="";
+		String time_out="";
+		String status = "";
+		
+		for(int i = 0; i<mem_num; i++){
+			query = "select time_in,time_out from managingDB where _id=?;";
+			pstm = conn.prepareStatement(query);
+			pstm.setString(1,member_id[i]);
+			rset = pstm.executeQuery();
+			while(rset.next()){
+				time_in = rset.getString(1);
+				time_out = rset.getString(2);
+			}
+			
+			if(time_in == null && time_out == null){
+				status = "4"; // : 결석
+			}else if(time_in == null && time_out!=null){
+				status = "2"; // 2: 지각
+			}else if(time_in!=null && time_out==null){
+				status = "1"; // 1: 조퇴
+			}else if(time_in != null && time_out!=null){
+				status = "5"; // 5: 출석
+			}
+			
+			query = "update managingDB set status=? where _id=?;";
+			pstm = conn.prepareStatement(query);
+			pstm.setString(1,status);
+			pstm.setString(2,member_id[i]);
+			pstm.execute();
+		}
+		
+		query = "INSERT INTO attendanceDB(_id,time_in,time_out,status,date) SELECT _id,time_in,time_out,status,date FROM managingDB;";
+		pstm = conn.prepareStatement(query);
+		pstm.execute();
+		
+		query = "DELETE FROM managingDB;";
+		pstm = conn.prepareStatement(query);
+		pstm.execute();
+		
+		query = "INSERT INTO managingDB(_id) SELECT _id FROM otpDB;";
+		pstm = conn.prepareStatement(query);
+		pstm.execute();
+		
+		rset.close();
+		pstm.close();
+		conn.close(); 
+		}catch(SQLException e){
+			cancel();
+			return;
+		}catch(Exception e){
+			cancel();
+			return;
+		}
+		count++;
+
+		//cancel();
+	}
+}
+%>
 <%
 try{
 	Class.forName("com.mysql.jdbc.Driver");
-	Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/KOPOCTC","root","alslf2gk");
+	Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/iamhpd7","iamhpd7","ctc@kopo");
 	String query = null;
 	PreparedStatement pstm = null;
 	
@@ -20,7 +118,8 @@ try{
 		   + "attd TIME,"
 		   + "attd_interval TIME,"
            + "leave_ TIME,"
-           + "leave_interval TIME)"
+           + "leave_interval TIME,"
+		   + "otp_interval TIME)"
            + "ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 	pstm = conn.prepareStatement(query);
 	pstm.execute();		// sysMaster 테이블 생성
@@ -90,12 +189,14 @@ try{
 	
 	out.println("attendanceDB 테이블 생성 완료");
 	
+	/* cafe24 서버에서는 권한이 없으므로 event scheduler 를 사용하지 못합니다.
+	** java.util.Timer 와 java.util.TimerTask 클래스를 이용합니다.
 	query = "CREATE EVENT IF NOT EXISTS evt1_makestatus"
 		  + " ON SCHEDULE EVERY '1' DAY"
 		  + " STARTS '2018-03-28 23:59:00'"
 		  + " COMMENT 'Make status at 23:59 daily'"
 		  + " DO"
-		  + " UPDATE KOPOCTC.managingDB SET status = 4 WHERE time_in is null AND time_out is null;";
+		  + " UPDATE iamhpd7.managingDB SET status = 4 WHERE time_in is null AND time_out is null;";
 	pstm = conn.prepareStatement(query);
 	pstm.execute();		// 이벤트 생성 - evt1_makestatus
 	
@@ -104,7 +205,7 @@ try{
 		  + " STARTS '2018-03-28 23:59:02'"
 		  + " COMMENT 'Make status at 23:59 daily'"
 		  + " DO"
-		  + " UPDATE KOPOCTC.managingDB SET status = 2 WHERE time_in is not null AND time_out is null;";
+		  + " UPDATE iamhpd7.managingDB SET status = 2 WHERE time_in is not null AND time_out is null;";
 	pstm = conn.prepareStatement(query);
 	pstm.execute();		// 이벤트 생성 - evt2_makestatus
 	
@@ -113,7 +214,7 @@ try{
 		  + " STARTS '2018-03-28 23:59:04'"
 		  + " COMMENT 'Make status at 23:59 daily'"
 		  + " DO"
-		  + " UPDATE KOPOCTC.managingDB SET status = 1 WHERE time_in is null AND time_out is not null;";
+		  + " UPDATE iamhpd7.managingDB SET status = 1 WHERE time_in is null AND time_out is not null;";
 	pstm = conn.prepareStatement(query);
 	pstm.execute();		// 이벤트 생성 - evt3_makestatus
 	
@@ -122,7 +223,7 @@ try{
 		  + " STARTS '2018-03-28 23:59:06'"
 		  + " COMMENT 'Make status at 23:59 daily'"
 		  + " DO"
-		  + " UPDATE KOPOCTC.managingDB SET status = 5 WHERE time_in is not null AND time_out is not null;";
+		  + " UPDATE iamhpd7.managingDB SET status = 5 WHERE time_in is not null AND time_out is not null;";
 	pstm = conn.prepareStatement(query);
 	pstm.execute();		// 이벤트 생성 - evt4_makestatus
 	
@@ -131,7 +232,7 @@ try{
 		  + " STARTS '2018-03-28 23:59:10'"
 		  + " COMMENT 'Sate status at 23:59 daily'"
 		  + " DO"
-		  + " INSERT INTO KOPOCTC.attendanceDB(_id,time_in,time_out,status,date) SELECT _id,time_in,time_out,status,date FROM KOPOCTC.managingDB;";
+		  + " INSERT INTO iamhpd7.attendanceDB(_id,time_in,time_out,status,date) SELECT _id,time_in,time_out,status,date FROM iamhpd7.managingDB;";
 	pstm = conn.prepareStatement(query);
 	pstm.execute();		// 이벤트 생성 - evt_save
 	
@@ -140,7 +241,7 @@ try{
 		  + " STARTS '2018-03-28 23:58:20'"
 		  + " COMMENT 'Delete managingDB at 23:59 daily'"
 		  + " DO"
-		  + " DELETE FROM KOPOCTC.managingDB;";
+		  + " DELETE FROM iamhpd7.managingDB;";
 	pstm = conn.prepareStatement(query);
 	pstm.execute();		// 이벤트 생성 - evt_delete
 	
@@ -149,9 +250,22 @@ try{
 		  + " STARTS '2018-03-29 00:00:01'"
 		  + " COMMENT 'Insert into managingDB at 23:59 daily'"
 		  + " DO"
-		  + " INSERT INTO KOPOCTC.managingDB(_id) SELECT _id FROM KOPOCTC.otpDB;";
+		  + " INSERT INTO iamhpd7.managingDB(_id) SELECT _id FROM iamhpd7.otpDB;";
 	pstm = conn.prepareStatement(query);
 	pstm.execute();		// 이벤트 생성 - evt_delete
+	*/
+	
+	// java 제공 클래스 사용
+	// 하루 한 번 실행합니다.
+	long dayInterval = 24 * 60 * 60 * 1000;
+	String startTime_string = "2018-04-03 23:50:00";
+	Date startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(startTime_string);
+	out.println(startTime_string);
+	out.println(startTime);
+	
+	Timer m_timer = new Timer();
+	TimerTask task = new CounterTimerTask();
+	m_timer.scheduleAtFixedRate(task, startTime, dayInterval);
 	
 	out.println("테이블 및 임의의 데이터 생성 완료");
 	pstm.close();

@@ -29,8 +29,8 @@ if(loginOK==null || !loginOK.equals(checkID)){
 	return;
 }
 %>
-<h1>월간 출퇴근 현황</h1>
-<table border=1 cellspacing=0>
+<h1 align=center>월간 출결 현황</h1>
+<br>
 <%
 String _id = "";
 String dept = "";
@@ -38,7 +38,7 @@ String name = "";
 
 try{
 	Class.forName("com.mysql.jdbc.Driver");
-	Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/KOPOCTC","root","alslf2gk");
+	Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/iamhpd7","iamhpd7","ctc@kopo");
 	ResultSet rset = null;
 	ResultSet rset2 = null;
 	String query = null;
@@ -51,7 +51,7 @@ try{
 		out.println("학생 정보가 없습니다. 아래 버튼을 눌러 학생을 등록해 주세요.");
 	}else{
 	%>
-	<table border=1 cellspacing=0>
+	<table border=1 cellspacing=0 align=center style="text-align:center;">
 	<tr>
 		<th>학과</th><th>이름</th><th>학번</th><th>현황 확인</th>
 	</tr>

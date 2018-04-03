@@ -1,5 +1,45 @@
 ﻿<%@ page contentType="text/html; charset=utf-8" %>
 <%@ page import="java.sql.*, javax.sql.*, java.io.*, java.util.Date, java.math.*, java.text.*" %>
+<%@ page import="java.util.Timer" %>
+<%@ page import="java.util.TimerTask" %>
+<%@ page import="java.util.Date" %>
+<%!
+class CounterTimerTask extends java.util.TimerTask {
+
+private int count = 1;
+private String id = "";
+
+public CounterTimerTask(String id) {
+	this.id = id;
+}
+
+public void run() {
+   if(count<2){
+	   try{
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/iamhpd7","iamhpd7","ctc@kopo");
+		String query = null;
+		PreparedStatement pstm = null;
+		
+		query = "update otpDB set otp=null where _id=?;";
+		pstm = conn.prepareStatement(query);
+		pstm.setString(1,id);
+		pstm.execute();
+		
+		pstm.close();
+		conn.close(); 
+		}catch(SQLException e){
+			return;
+		}catch(Exception e){
+			return;
+		}
+		count++;
+   }else{
+	   cancel();
+   }
+}
+}
+%>
 <%
 request.setCharacterEncoding("utf-8");
 String id = request.getParameter("user_id");
@@ -16,7 +56,7 @@ boolean bPassCk=false;	//기본값은 false
 
 try{
 	Class.forName("com.mysql.jdbc.Driver");
-	Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/KOPOCTC","root","alslf2gk");
+	Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/iamhpd7","iamhpd7","ctc@kopo");
 	ResultSet rset = null;
 	String query = null;
 	PreparedStatement pstm = null;
@@ -92,9 +132,9 @@ try{
 	//아이디와 비밀번호 체크가 끝나면 세션을 기록하고 점프합니다.
 	if(bPassCk){
 		session.setAttribute("login_ok",id);	//key값은 login_ok, 이에 해당하는 value는 id
-
+		
 		//로그인 성공했을 때 결과를 XML로 출력
-
+		
 		/* 랜덤값 생성 */
 		int max = 999999999;
 		int min = 0;
@@ -111,6 +151,28 @@ try{
 		pstm.setInt(1, otpForId);
 		pstm.setString(2, id);
 		pstm.execute();	
+		
+		/* otp 유효시간을 체크한 뒤 그 시간 뒤에 otp를 삭제해 줍니다. */
+		String otp_interval = "";
+		query = "select otp_interval from sysMaster;";
+		pstm = conn.prepareStatement(query);
+		rset = pstm.executeQuery();
+		while(rset.next()){
+			otp_interval = rset.getString(1);
+		}
+		//분 단위로 변환
+		otp_interval = otp_interval.replaceAll(":","");
+		otp_interval = otp_interval.substring(0,4);
+		int otp_time = Integer.parseInt(otp_interval);
+		//long 타입으로 변환
+		long delay = Long.valueOf(otp_time);
+		delay = delay * 60 * 1000;
+		
+		long intervalPeriod = 1 * 1000;
+		
+		Timer m_timer = new Timer();
+		TimerTask task = new CounterTimerTask(id);
+		m_timer.scheduleAtFixedRate(task, delay, intervalPeriod);
 		
 		String name = "";
 		String dept = "";
@@ -144,6 +206,9 @@ try{
 				pw.print("<otp>");
 				pw.print(otp);
 				pw.print("</otp>");
+				pw.print("<otp_interval>");
+				pw.print(otp_interval);
+				pw.print("</otp_interval>");
 			pw.print("</data>");
 		pw.print("</datas>");
 		
@@ -159,7 +224,6 @@ try{
 			//out.println("해당 아이디의 로그인이 제한되었습니다.");
 		}
 	}
-
 }catch(SQLException e){
 	if(e.getMessage().contains("Duplicate")){
 		out.println(e.toString());

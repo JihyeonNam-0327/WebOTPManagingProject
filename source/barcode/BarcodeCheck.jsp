@@ -12,7 +12,7 @@ String _id = "";
 
 try{
 	Class.forName("com.mysql.jdbc.Driver");
-	Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/KOPOCTC","root","alslf2gk");
+	Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/iamhpd7","iamhpd7","ctc@kopo");
 	ResultSet rset = null;
 	String query = null;
 	PreparedStatement pstm = null;
@@ -53,7 +53,7 @@ try{
 	if(!rset.next()){
 		//해당 otp 는 유효하지 않습니다.
 		re = 0;
-		out.println("아이디가 없음.");
+		//out.println("아이디가 없음.");
 	}else{
 		//해당 otp가 존재할 때
 		_id = rset.getString(1);

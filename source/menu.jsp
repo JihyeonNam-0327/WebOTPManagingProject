@@ -31,13 +31,13 @@ a:active {text-decoration:none;}
 		 | 학생 관리 
 		</a>
 		<a href='manage.jsp' target=main>
-		 | 일일 출퇴근 현황 
+		 | 일일 출결 현황 
 		</a>
 		<a href='manageMonth.jsp' target=main>
-		 | 월간 출퇴근 현황 
+		 | 월간 출결 현황 
 		</a>
 		<a href='barcode/BarcodeRead.jsp' target=main>
-		 | 바코드 체크 테스트 | 
+		 | 입/퇴실 체크 | 
 		</a>
 		<a href='logout.jsp' target='main'>
 		<button>로그아웃</button>	

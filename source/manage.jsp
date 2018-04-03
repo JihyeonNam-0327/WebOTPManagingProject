@@ -4,6 +4,13 @@
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ page import="java.sql.*, javax.sql.*, java.io.*, java.util.Date, java.math.*, java.text.*" %>
 <head>
+<!-- 합쳐지고 최소화된 최신 CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<!-- 부가적인 테마 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 </head>
 <body>
 <% request.setCharacterEncoding("utf-8");
@@ -25,8 +32,8 @@ String curDate = sdf.format(today);
 sdf = new SimpleDateFormat("yyyy-MM-dd");
 String compareTime = sdf.format(today);
 %>
-<h1>일일 출퇴근 현황</h1>
-<b><%=curDate%> 입/퇴실 List</b>
+<h1 align=center>일일 출결 현황</h1>
+<h3 align=center><b><%=curDate%></b> 입/퇴실 List</h3>
 <br>
 <form method="post">
 <%
@@ -38,7 +45,7 @@ String resultStatus = "";
 
 try{
 	Class.forName("com.mysql.jdbc.Driver");
-	Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/KOPOCTC","root","alslf2gk");
+	Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/iamhpd7","iamhpd7","ctc@kopo");
 	ResultSet rset2 = null;
 	ResultSet rset = null;
 	String query = null;
@@ -53,7 +60,7 @@ try{
 		return;
 	}else{
 		%>
-		<table border=1 cellspacing=0>
+		<table border=1 cellspacing=0 align=center style="text-align:center;" width=400>
 		<tr>
 			<td>학번</td>
 			<td>입실 시간</td>
