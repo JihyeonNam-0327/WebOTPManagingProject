@@ -10,12 +10,12 @@
 <%!
 class CounterTimerTask extends java.util.TimerTask {
 	
-	private int count = 0;
 	public CounterTimerTask() {
 	}
 	
 	public void run() {
 		try{
+		int count = 0;
 		Class.forName("com.mysql.jdbc.Driver");
 		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/iamhpd7","iamhpd7","ctc@kopo");
 		String query = null;
@@ -81,6 +81,35 @@ class CounterTimerTask extends java.util.TimerTask {
 		query = "DELETE FROM managingDB;";
 		pstm = conn.prepareStatement(query);
 		pstm.execute();
+				
+		rset.close();
+		pstm.close();
+		conn.close(); 
+		}catch(SQLException e){
+			cancel();
+			return;
+		}catch(Exception e){
+			cancel();
+			return;
+		}
+		
+		//cancel();
+	}
+}
+
+class InsertTimerTask extends java.util.TimerTask {
+	
+	public InsertTimerTask() {
+	}
+	
+	public void run() {
+		try{
+		int count = 0;
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/iamhpd7","iamhpd7","ctc@kopo");
+		String query = null;
+		ResultSet rset = null;
+		PreparedStatement pstm = null;
 		
 		query = "INSERT INTO managingDB(_id) SELECT _id FROM otpDB;";
 		pstm = conn.prepareStatement(query);
@@ -96,8 +125,7 @@ class CounterTimerTask extends java.util.TimerTask {
 			cancel();
 			return;
 		}
-		count++;
-
+		
 		//cancel();
 	}
 }
@@ -258,13 +286,17 @@ try{
 	// java 제공 클래스 사용
 	// 하루 한 번 실행합니다.
 	long dayInterval = 24 * 60 * 60 * 1000;
-	String startTime_string = "2018-04-03 23:50:00";
+	String startTime_string = "2018-04-05 23:50:00";
 	Date startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(startTime_string);
-	out.println(startTime_string);
-	out.println(startTime);
 	
 	Timer m_timer = new Timer();
 	TimerTask task = new CounterTimerTask();
+	m_timer.scheduleAtFixedRate(task, startTime, dayInterval);
+	
+	startTime_string = "2018-04-06 00:00:10";
+	
+	m_timer = new Timer();
+	task = new InsertTimerTask();
 	m_timer.scheduleAtFixedRate(task, startTime, dayInterval);
 	
 	out.println("테이블 및 임의의 데이터 생성 완료");

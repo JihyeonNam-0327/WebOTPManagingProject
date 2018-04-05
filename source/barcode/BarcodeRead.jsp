@@ -4,13 +4,11 @@
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ page import="java.sql.*, javax.sql.*, java.io.*, java.util.Date, java.math.*, java.text.*" %>
 <%@ page import="java.net.*, java.io.*" %>
-<!-- 합쳐지고 최소화된 최신 CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-<!-- 부가적인 테마 -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css">
+<script src="//code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 <head>
 </head>
@@ -24,8 +22,8 @@
 </div>
 <input type="submit" value="인증" id="button1">
 </form>
-<div id="content" style='margin:auto;'></div>
-<p align='center' id="resultMessage"></p>
+<center><div id="content"></div></center>
+<p style='text-align:center;' id="resultMessage"></p>
 <script type="text/javascript">
 angular.module('myApp', [])
 .controller('myCtrl', ['$scope', function($scope) {
@@ -61,6 +59,8 @@ angular.module('myApp', [])
 					$("#resultMessage").text("하지만 인증 가능한 시간이 아닙니다.").css("color","black");
 					$('#content').text(dept+" "+name+ "(" +id+ ") 님이 " +date+ " 에 체크했습니다.");
 				}else if(check == "0"){
+					$("#resultMessage").text("해당 바코드가 유효하지 않습니다.").css("color","blue");
+				}else{
 					$("#resultMessage").text("해당 바코드가 유효하지 않습니다.").css("color","blue");
 				}
 								

@@ -98,7 +98,11 @@ a:hover{
 				}
 			}
 			if(attd_status[0][cnt].substring(5,10).equals(bigyo)){
-				print = "<br><font color=red size=6>"+attd_status[1][cnt]+"</font>";
+				if(("출석").equals(attd_status[1][cnt])){
+					print = "<br><font size=4>"+attd_status[1][cnt]+"</font>";
+				}else{
+					print = "<br><font color=red size=4>"+attd_status[1][cnt]+"</font>";
+				}
 			}
 			return print;
 		}//같은 달인데 오늘보다 이전인 경우 if문 종료
@@ -119,7 +123,11 @@ a:hover{
 				}
 			}
 			if(attd_status[0][cnt].substring(5,10).equals(bigyo)){
-				print = "<br><font color=red size=6>"+attd_status[1][cnt]+"</font>";
+				if(("출석").equals(attd_status[1][cnt])){
+					print = "<br><font size=4>"+attd_status[1][cnt]+"</font>";
+				}else{
+					print = "<br><font color=red size=4>"+attd_status[1][cnt]+"</font>";
+				}
 			}
 			return print;
 		}//이전달인데 나보다 큰 날 종료
@@ -260,19 +268,19 @@ try{
 	out.println("		<font style='text-decoration: none;'> &nbsp;〉</font></a></td>");
 	out.println("	</tr>");
 	out.println("	<tr align=center height=30>");
-	out.println("		<th class=mytable bgcolor='#f8f8f8' valign=top><font color='red'><b>일</b></font></th>"); 
-	out.println("		<th class=mytable bgcolor='#f8f8f8' valign=top><b>월</b></th>");
-	out.println("		<th class=mytable bgcolor='#f8f8f8' valign=top><b>화</b></th>");
-	out.println("		<th class=mytable bgcolor='#f8f8f8' valign=top><b>수</b></th>");
-	out.println("		<th class=mytable bgcolor='#f8f8f8' valign=top><b>목</b></th>");
-	out.println("		<th class=mytable bgcolor='#f8f8f8' valign=top><b>금</b></th>");
-	out.println("		<th class=mytable bgcolor='#f8f8f8' valign=top><font color='blue'><b>토</b></font></td>");
+	out.println("		<th class=mytable bgcolor='#ffffff' valign=top><font color='red'><b>일</b></font></th>"); 
+	out.println("		<th class=mytable bgcolor='#ffffff' valign=top><b>월</b></th>");
+	out.println("		<th class=mytable bgcolor='#ffffff' valign=top><b>화</b></th>");
+	out.println("		<th class=mytable bgcolor='#ffffff' valign=top><b>수</b></th>");
+	out.println("		<th class=mytable bgcolor='#ffffff' valign=top><b>목</b></th>");
+	out.println("		<th class=mytable bgcolor='#ffffff' valign=top><b>금</b></th>");
+	out.println("		<th class=mytable bgcolor='#ffffff' valign=top><font color='blue'><b>토</b></font></td>");
 	out.println("	</tr>");
 	
 	for(int i = 0; i < col; i++){
 		out.println("<tr align=left height=110>");
 		for(int j = 0; j < row; j++){
-			out.println("<td class=mytable width=110 bgcolor='#f8f8f8' valign=top>");
+			out.println("<td class=mytable width=110 bgcolor='#edf4f9' valign=top>");
 			if(day <= lastDay){
 				//첫 주 시작하는 날 전까지는 빈칸으로 채우기
 				if(i == 0 && (j+1) < firstDay){
@@ -315,5 +323,6 @@ try{
 }
 %>
 </table>
+<br><br><br>
 </body>
 </html>

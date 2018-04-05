@@ -5,13 +5,11 @@
 <%@ page import="java.sql.*, javax.sql.*, java.io.*, java.util.Date, java.math.*, java.text.*" %>
 <%@ page import="java.net.*, java.io.*" %>
 <head>
-<!-- 합쳐지고 최소화된 최신 CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-<!-- 부가적인 테마 -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css">
+<script src="//code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 </head>
 <body>
 <% request.setCharacterEncoding("utf-8");%>
@@ -31,6 +29,7 @@ if(loginOK==null || !loginOK.equals(checkID)){
 %>
 <h1 align=center>월간 출결 현황</h1>
 <br>
+<div style='width:600px; margin:auto;'>
 <%
 String _id = "";
 String dept = "";
@@ -48,13 +47,16 @@ try{
 	pstm = pstm = conn.prepareStatement(query);
 	rset2 = pstm.executeQuery();
 	if(!rset2.next()){
-		out.println("학생 정보가 없습니다. 아래 버튼을 눌러 학생을 등록해 주세요.");
+		out.println("<center>학생 정보가 없습니다. 아래 버튼을 눌러 학생을 등록해 주세요.</center>");
 	}else{
 	%>
-	<table border=1 cellspacing=0 align=center style="text-align:center;" width=400>
+	<table class='table table-bordered table-hover' border=1 cellspacing=0 align=center style="text-align:center;" width=400>
+	<thead>
 	<tr>
 		<th>학과</th><th>이름</th><th>학번</th><th>현황 확인</th>
 	</tr>
+	</thead>
+	<tbody>
 	<%
 		query = "select dept, name, _id from memberDB";
 		pstm = conn.prepareStatement(query);
@@ -91,7 +93,9 @@ try{
 	out.println(e.toString());
 }
 %>
+</tbody>
 </table>
+</div>
 <script>
 function buttonToDetail(id, name){
 	location.href = "manageMonthDetail.jsp?id="+id+"&name="+name;

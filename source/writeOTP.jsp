@@ -8,13 +8,11 @@
 <%@ page import="java.util.Date" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <head>
-<!-- 합쳐지고 최소화된 최신 CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-<!-- 부가적인 테마 -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css">
+<script src="//code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 </head>
 <%!
 class CounterTimerTask extends java.util.TimerTask {
@@ -100,6 +98,14 @@ try{
 	query = "select otp_interval from sysMaster;";
 	pstm = conn.prepareStatement(query);
 	rset = pstm.executeQuery();
+	if(!rset.next()){
+		out.println("<center>먼저, 바코드 유효 시간을 설정해 주세요.</center>");
+		return;
+	}
+	
+	query = "select otp_interval from sysMaster;";
+	pstm = conn.prepareStatement(query);
+	rset = pstm.executeQuery();
 	while(rset.next()){
 		otp_interval = rset.getString(1);
 	}
@@ -121,7 +127,7 @@ try{
 	pstm.close();
 	conn.close(); 
 	
-	out.println("OTP를 생성했습니다.");
+	out.println("<center>OTP를 생성했습니다.</center>");
 	
 }catch(SQLException e){
 	if(e.getMessage().contains("Duplicate")){
@@ -133,7 +139,7 @@ try{
 	out.println(e.toString());
 }
 %>
-<button class='btn center-block btn-info' id="buttonToBack">돌아가기</button>
+<center><button class='btn center-block btn-info' id="buttonToBack">돌아가기</button></center>
 <script>
 $(function(){
 	$("#buttonToBack").click(function(){

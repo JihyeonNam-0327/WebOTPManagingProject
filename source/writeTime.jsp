@@ -5,13 +5,11 @@
 <%@ page import="java.sql.*, javax.sql.*, java.io.*, java.util.Date, java.math.*, java.text.*" %>
 <% request.setCharacterEncoding("utf-8");%>
 <head>
-<!-- 합쳐지고 최소화된 최신 CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-<!-- 부가적인 테마 -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css">
+<script src="//code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 </head>
 <body>
 <%
@@ -28,12 +26,12 @@ otp_interval = request.getParameter("otp_interval");
 attd_interval = "00:"+attd_interval;
 leave_interval = "00:"+leave_interval;
 otp_interval = "00:"+otp_interval;
-out.println("시간 setting 값은 다음과 같습니다.<br><br>");
+out.println("<center>시간 setting 값은 다음과 같습니다.<br><br>");
 out.println("<b>입실 시간 :" + attd + "</b>");
 out.println("<b>부터 " + attd_interval + " 분 동안</b><br>");
 out.println("<b>퇴실 시간 :" + leave_ + "</b>");
 out.println("<b>부터 " + leave_interval + " 분 동안</b><br><br>");
-out.println("<b>OTP 유효 시간 :"+otp_interval+" 분 동안</b><br>");
+out.println("<b>OTP 유효 시간 :"+otp_interval+" 분 동안</b></center><br>");
 
 Date today = new Date();
 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -75,12 +73,12 @@ try{
 		pstm.setString(1,curDate);
 		pstm.execute(); //attendanceDB 의 출석내역을 삭제합니다.
 	}else{
-		out.println("설정 사항이 없습니다. 시간을 설정해 주세요.");
+		out.println("<center>설정 사항이 없습니다. 시간을 설정해 주세요.</center>");
 	}
 	
 	pstm.close();
 	conn.close();
-	out.println("설정 사항을 저장했습니다.<br>");
+	out.println("<center>설정 사항을 저장했습니다.<br></center>");
 	
 }catch(SQLException e){
 	if(e.getMessage().contains("Duplicate")){
@@ -92,7 +90,7 @@ try{
 	out.println(e.toString());
 }
 %>
-<button class='btn center-block btn-info' id="buttonToBack">돌아가기</button>
+<center><button class='btn btn-info' id="buttonToBack">돌아가기</button></center>
 <script>
 $(function(){
 	$("#buttonToBack").click(function(){

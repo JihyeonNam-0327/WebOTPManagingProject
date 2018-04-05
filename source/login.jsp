@@ -44,11 +44,11 @@
 <script>alert("뭐냐"+<%=jump%>);</script>
 <center>
 <br><br><br><br><br>
-<p>로그인</p>
+<p>관리자 로그인</p>
 <form method='post' action='login_id_pw_check.jsp'>
 <table class=mytable>
 	<tr>
-		<td>학번
+		<td>아이디
 		</td>
 		<td><input type='text' name='id' autofocus required />
 		</td>

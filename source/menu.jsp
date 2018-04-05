@@ -10,37 +10,41 @@
 <style type='text/css'>
 td{font-size:12; text-align:center;}
 table{align:center;}
-a:no-uline { text-decoration:none; }
+a:no-uline { text-decoration:none;
+color:black; }
 a:link{color:black; text-decoration:none;}
-a:visited {text-decoration:none;}
-a:hover{text-decoration:none;}
-a:active {text-decoration:none;}
+a:visited {text-decoration:none;
+color:black;}
+a:hover{text-decoration:none;
+color:black;}
+a:active {text-decoration:none;
+color:black;}
 </style>
 </HEAD>
-<body bgcolor='#f8f8f8'>
+<body bgcolor='#ffffff'>
 <center>
 <table cellpadding=0 cellspacing=0 border=0>
 	<tr>
-		<td width=200><a href='main.jsp' target=main ><img src="img/logo.jpg" width=170 border=0></a>
-		</td>			
-		<td width=720 style='text-align:left;'>
-		<a href='setting.jsp' target=main style='a.no-uline { text-decoration:none; }'>
-		| 입/퇴실 시간 설정 
+		<td width=80><center><a href='main.jsp' target=main ><img src="img/logo.jpg" width=80 border=0></a>
+		</center></td>			
+		<td width=760 style='text-align:left;'>
+		<a href='setting.jsp' target=main>
+		&nbsp;&nbsp; 입/퇴실 시간 설정 &nbsp;&nbsp;
 		</a>
 		<a href='memberManage.jsp' target=main>
-		 | 학생 관리 
+		 학생 관리 &nbsp;&nbsp;
 		</a>
 		<a href='manage.jsp' target=main>
-		 | 일일 출결 현황 
+		 일일 출결 현황 &nbsp;&nbsp;
 		</a>
 		<a href='manageMonth.jsp' target=main>
-		 | 월간 출결 현황 
+		 월간 출결 현황 &nbsp;&nbsp;
 		</a>
 		<a href='barcode/BarcodeRead.jsp' target=main>
-		 | 입/퇴실 체크 | 
+		 입/퇴실 체크  &nbsp;&nbsp;
 		</a>
 		<a href='logout.jsp' target='main'>
-		<button>로그아웃</button>	
+		 로그아웃 
 		</a>
 		</td>
 	</tr>

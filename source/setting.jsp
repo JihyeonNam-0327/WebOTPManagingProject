@@ -4,13 +4,11 @@
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ page import="java.sql.*, javax.sql.*, java.io.*, java.util.*, java.math.*, java.text.*" %>
 <head>
-<!-- 합쳐지고 최소화된 최신 CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-<!-- 부가적인 테마 -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css">
+<script src="//code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 </head>
 <body>
 <% request.setCharacterEncoding("utf-8");%>
@@ -58,21 +56,25 @@ try{
 		<tr><td>
 		<b>현재 설정된 입/퇴실 시간 및 OTP(QR코드) 유효시간 입니다.</b>
 		<br><br>
-		<table border=1 cellspacing=0 align=center width=500 style="text-align:center;">
-		<tr>
-			<td>입실 시작 시간</td><td>입실 유효시간</td><td>퇴실 시작 시간</td><td>퇴실 유효시간</td><td><b>바코드 유효시간</b></td>
+		<table class='table table-bordered' border=1 cellspacing=0 align=center width=600 style="text-align:center;">
+		<thead>
+		<tr class="table-primary">
+			<th scope="col">입실 시작 시간</th><th scope="col">입실 유효시간</th><th scope="col">퇴실 시작 시간</th><th scope="col">퇴실 유효시간</th><th scope="col">바코드 유효시간</th>
 		</tr>
+		</thead>
+		<tbody>
 		<tr>
 			<td><%=attd%></td><td><%=attd_interval%></td><td><%=leave_%></td><td><%=leave_interval%></td><td><b><%=otp_interval%></b></td>
 		</tr>
+		</tbody>
 		</table>
 		<br><br>
-		<b>입/퇴실 시간과 OTP(QR코드)의 유효 시간을 변경하려면 아래 폼에 원하는 시간을 입력한 뒤 '시간 설정'버튼을 눌러 주세요.<br>
-		시간을 다시 설정하면 기존의 입/퇴실 기록은 사라집니다!</b>
+		입/퇴실 시간과 OTP(QR코드)의 유효 시간을 변경하려면 아래 폼에 원하는 시간을 입력한 뒤 '시간 설정'버튼을 눌러 주세요.<br>
+		<b>* 시간을 다시 설정하면 기존의 입/퇴실 기록은 사라집니다!</b>
 		<%
 	}else{
-		out.println("<b>현재 설정된 입/퇴실 시간 및 OTP(QR코드) 유효시간이 없습니다.<br>");
-		out.println("아래 폼에 입/퇴실 시간과 OTP(QR코드)의 유효 시간을 입력한 뒤 '시간 설정'버튼을 눌러 주세요.</b>");
+		out.println("<center><b>현재 설정된 입/퇴실 시간 및 OTP(QR코드) 유효시간이 없습니다.<br>");
+		out.println("아래 폼에 입/퇴실 시간과 OTP(QR코드)의 유효 시간을 입력한 뒤 '시간 설정'버튼을 눌러 주세요.</b></center>");
 	}
 	
 	rset.close();
@@ -90,19 +92,22 @@ try{
 }
 %>
 <br><br>
-<div style="margin:auto; width:500px;">
+<div style="margin:auto; width:600px;">
 <form method="post">
 입실 시작 시간 : <input name='attd' type=time required/> 부터 <input name='attd_interval' style="width:50px;"  type=number required/> 분 동안으로 설정
 <br>
 퇴실 시작 시간 : <input name='leave_' type=time required/> 부터 <input name='leave_interval' style="width:50px;"  type=number required/> 분 동안으로 설정
 <br><br>
-OTP 유효 시간 : OTP 생성 후 <input name='otp_interval' type=number style="width:50px;" required/> 분 동안 유효하도록 설정.
- &nbsp; <input type=submit name='setTime' value='시간 설정' formaction="writeTime.jsp"/>
+OTP 유효 시간 : OTP 생성 후 <input name='otp_interval' type=number style="width:50px;" required/> 분 동안 유효하도록 설정
+ &nbsp; <input type=submit class='btn btn-info' name='setTime' value='시간 설정' formaction="writeTime.jsp"/>
 <br><br><br>
 </div>
 </form>
-<b>관리자 권한으로 OTP 일괄 생성하기</b>
-<input type=button name='makeOTP' value='OTP 생성' onclick='location.href="writeOTP.jsp"'/>
+</td></tr>
+<tr><td>
+기타 옵션 : 관리자 권한으로 OTP를 일괄 생성할 수 도 있습니다. 
+<b>관리자 권한으로 OTP를 생성하려면 우측 버튼을 눌러 주세요. &nbsp;</b>
+<input type=button class='btn btn-info' name='makeOTP' value='OTP 생성' onclick='location.href="writeOTP.jsp"'/>
 </td></tr>
 </table>
 </body>

@@ -5,13 +5,11 @@
 <%@ page import="java.sql.*, javax.sql.*, java.io.*, java.util.*, java.util.Date, java.math.*, java.text.*, java.net.*" %>
 <%@ page import="java.net.*, java.io.*" %>
 <head>
-<!-- 합쳐지고 최소화된 최신 CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-<!-- 부가적인 테마 -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css">
+<script src="//code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <style type="text/css">
 table.mytable {
     border-collapse: separate;
@@ -99,7 +97,11 @@ a:hover{
 				}
 			}
 			if(attd_status[0][cnt].substring(5,10).equals(bigyo)){
-				print = "<br><font color=red size=6>"+attd_status[1][cnt]+"</font>";
+				if(("출석").equals(attd_status[1][cnt])){
+					print = "<br><font size=5>"+attd_status[1][cnt]+"</font>";
+				}else{
+					print = "<br><font color=red size=5>"+attd_status[1][cnt]+"</font>";
+				}
 			}
 			return print;
 		}//같은 달인데 오늘보다 이전인 경우 if문 종료
@@ -120,7 +122,11 @@ a:hover{
 				}
 			}
 			if(attd_status[0][cnt].substring(5,10).equals(bigyo)){
-				print = "<br><font color=red size=6>"+attd_status[1][cnt]+"</font>";
+				if(("출석").equals(attd_status[1][cnt])){
+					print = "<br><font size=5>"+attd_status[1][cnt]+"</font>";
+				}else{
+					print = "<br><font color=red size=5>"+attd_status[1][cnt]+"</font>";
+				}
 			}
 			return print;
 		}//이전달인데 나보다 큰 날 종료
@@ -146,7 +152,7 @@ name = request.getParameter("name");
 if(name!=null){
 	name=new String(name.getBytes("8859_1"),"UTF-8");
 }
-out.println("<h3 align=center>"+name+"("+id+")"+"의 월간 출결 현황입니다.</h3>");
+out.println("<br><h3 align=center>"+name+"("+id+")"+"의 월간 출결 현황입니다.</h3><br>");
 
 int status = 0;
 String resultStatus = "";
@@ -256,19 +262,19 @@ try{
 	out.println("		<font style='text-decoration: none;'> &nbsp;〉</font></a></td>");
 	out.println("	</tr>");
 	out.println("	<tr align=center height=30>");
-	out.println("		<th class=mytable bgcolor='#f8f8f8' valign=top><font color='red'><b>일</b></font></th>"); 
-	out.println("		<th class=mytable bgcolor='#f8f8f8' valign=top><b>월</b></th>");
-	out.println("		<th class=mytable bgcolor='#f8f8f8' valign=top><b>화</b></th>");
-	out.println("		<th class=mytable bgcolor='#f8f8f8' valign=top><b>수</b></th>");
-	out.println("		<th class=mytable bgcolor='#f8f8f8' valign=top><b>목</b></th>");
-	out.println("		<th class=mytable bgcolor='#f8f8f8' valign=top><b>금</b></th>");
-	out.println("		<th class=mytable bgcolor='#f8f8f8' valign=top><font color='blue'><b>토</b></font></td>");
+	out.println("		<th class=mytable bgcolor='#ffffff' valign=top><font color='red'><b>일</b></font></th>"); 
+	out.println("		<th class=mytable bgcolor='#ffffff' valign=top><b>월</b></th>");
+	out.println("		<th class=mytable bgcolor='#ffffff' valign=top><b>화</b></th>");
+	out.println("		<th class=mytable bgcolor='#ffffff' valign=top><b>수</b></th>");
+	out.println("		<th class=mytable bgcolor='#ffffff' valign=top><b>목</b></th>");
+	out.println("		<th class=mytable bgcolor='#ffffff' valign=top><b>금</b></th>");
+	out.println("		<th class=mytable bgcolor='#ffffff' valign=top><font color='blue'><b>토</b></font></td>");
 	out.println("	</tr>");
 	
 	for(int i = 0; i < col; i++){
 		out.println("<tr align=left height=110>");
 		for(int j = 0; j < row; j++){
-			out.println("<td class=mytable width=110 bgcolor='#f8f8f8' valign=top>");
+			out.println("<td class=mytable width=110 bgcolor='#edf4f9' valign=top>");
 			if(day <= lastDay){
 				//첫 주 시작하는 날 전까지는 빈칸으로 채우기
 				if(i == 0 && (j+1) < firstDay){

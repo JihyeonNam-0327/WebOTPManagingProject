@@ -6,15 +6,11 @@
 <%@ page import="java.net.*, java.io.*" %>
 <% request.setCharacterEncoding("utf-8");%>
 <head>
-
-<!-- 합쳐지고 최소화된 최신 CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-
-<!-- 부가적인 테마 -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css">
+<script src="//code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 <style>
 input.ng-invalid {
@@ -35,7 +31,7 @@ input.ng-valid {
 <h1 align=center>학생 등록</h1>
 <br><br>
 <form name="myForm" ng-controller="myCtrl">
-<div class="form-group center-block">
+<div class="form-group" style="margin:auto;">
 * 모든 항목은 필수 입력 항목입니다.<br><br>
 	<label>학과 : </label><br>
 		<div>
@@ -43,35 +39,34 @@ input.ng-valid {
 			</select>
 		</div>
 </div>
-<div class="form-group center-block">
-
+<div class="form-group" style="margin:auto;">
 	<label>이름 : </label><br>
 	<input type="text" name="name" class="form-control input-lg " ng-model="user.Name" ng-required="true" ng-maxlength="20"/>
 	<div ng-show="myForm.name.$error.maxlength" class="form-control alert alert-light" role="alert">이름 최대 20글자만 입력가능합니다.</div>
 </div>
-<div class="form-group center-block">
+<div class="form-group" style="margin:auto;">
 	<label>학번 : </label><br>
 	<input type="number" class="form-control input-lg" name="_id" id="_id" ng-change="myFunc()" ng-model="myValue" ng-maxlength="10" required/>
 	<div ng-show="myForm._id.$error.maxlength" class="form-control alert alert-light" role="alert">학번은 최대 10글자만 입력가능합니다.</div>
 	<div class="form-control alert alert-light" role="alert" id="result_id_msg"></div>
 </div>
-<div class="form-group center-block">
+<div class="form-group"  style="margin:auto;">
 	<label>비밀번호 : </label><br>
 	<input type="password" name="password" class="form-control input-lg" id="pwd" onkeyup="checkPwd()" ng-model="user.password" ng-required="true" ng-minlength="8"/>
 	<div ng-show="myForm.password.$error.minlength"  class="form-control alert alert-light" role="alert">비밀번호는 최소 8글자 이상 입력해 주세요.</div>
 </div>
-<div class="form-group center-block">
+<div class="form-group"  style="margin:auto;">
 	<label>비밀번호 확인 : </label><br>
 	<input type="password" class="form-control input-lg" name="pwd_check" id="pwd_check" onkeyup="checkPwd()" ng-model="user.passwordcheck" ng-required="true" ng-minlength="8"/>
 	<div type="text" ng-show="myForm.pwd_check.$error.minlength" class="form-control alert alert-light" role="alert">비밀번호는 최소 8글자 이상 입력해 주세요.</div>
 	<div class="form-control alert alert-light" role="alert" id="checkPwd"></div>
 </div>
-<div class="form-group center-block">
+<div class="form-group" style="margin:auto;">
 	<label>전화번호 : </label><br>
 	<input type="phone" class="form-control input-lg" id="phone" name="phone">
 	<div class="form-control alert alert-light" role="alert" id="checkPhone"></div>
 </div>
-<div class="form-group center-block">
+<div class="form-group" style="margin:auto;">
 	<label>Email : </label><br>
 	<input type="email" name="email" ng-model="email" class="form-control input-lg" id="email" ng-maxlength="50" ng-required="true">
 	<span style="color:red" ng-show="myForm.email.$dirty && myForm.email.$invalid">
@@ -81,10 +76,12 @@ input.ng-valid {
 	</span>
 </div>
 <br>
-<div class="form-group center-block">
-	<input type="button" value="Sing Up" id="button2" class="btn btn-lg col-xs-6 col-md-2 pull-right btn-info"/>
-	<input type="button" value="Cancle" id="button1" class="btn btn-lg col-xs-6 col-md-2 pull-right btn-warning"/>
+
+<div class="form-group" style="margin:auto;">
+	<input type="button" value="등록하기" id="button2" class="btn btn-lg col-xs-6 btn-info"/>
+	<input type="button" value="다시쓰기" id="button1" class="btn btn-lg col-xs-6 btn-warning"/>
 </div>
+
 <br>
 </form>
 <script>
@@ -215,7 +212,7 @@ $("#button2").click(function() {
 
 	if(status_id != "사용 가능한 학번입니다." || status_pw != "암호를 확인했습니다." || name == "" 
 	  || phone.length < 10 || email == "" || id.length > 10 || dept == "" || password.length < 8 ){
-		alert("회원가입 양식에 맞추어 작성해 주세요. \n 혹시 빈 칸이 있는 지 확인해 보세요.");
+		alert("회원가입 양식에 맞추어 작성해 주세요. \n혹시 빈 칸이 있는 지 확인해 보세요.");
 		return;
 	}else{
 		myForm.action = "memberRegistrationDo.jsp";

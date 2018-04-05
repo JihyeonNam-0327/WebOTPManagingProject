@@ -60,14 +60,14 @@
 .img{
     position: relative;
     background-image: url(./img/background.jpg);
-    height: 100vh;
+    height: 50vh;
     background-size: cover;
 }
 .img-cover{									/*이미지 커버는 이미지의 선명도를 낮추고 어둡게 만들기 위해 추가합니다.*/
    position: absolute;						/*폰트 컬러가 흰색이므로 어두운 컬러의 커버를 이미지 위에 한 번 씌웁니다.*/
    height: 100%;
    width: 100%;
-   background-color: rgba(0, 0, 0, 0.4);                                                               
+   background-color: rgba(51, 204, 255, 0.4);                                                               
    z-index:1;								/*z-index는 로딩 순서입니다.*/
 }
 .img .content{								/*이미지 위에 글자를 올리기 위해 추가한 css입니다.*/
@@ -81,26 +81,20 @@
 	text-align: center;						/*글자를 이미지 위로 올립니다.*/
 	font-family: 'Archivo Black', sans-serif;
 	padding: 30px;
-	border: 1px solid gray;
+	border:0px;
 }
 </style>
 </HEAD>
 <body>
     <div class="img">
-        <div class="content">
-            <br><br><br>
-			<font align=center style='color:white; font-size:14pt;'>: : 출결관리 시스템 : :</font>
-			<br><br><br><br>
-			<table>
-				<tr><td width=845>
-					<font color=white> FBI도 울고 갈 개정확한 출결관리 시스템
-					
-					<h5 align=center ><%= msg %></h5>
-					</font>
-				</td></tr>
-			</table>
-        </div>
+        <div class="content"></div>
         <div class="img-cover"></div>
     </div>
+	<br><br><br>
+			<center><font align=center style='color:black; font-size:14pt;'>한국폴리텍대학 융합기술교육원<br>
+			출석 체크 관리 시스템</font>
+			<br><br><br><br>
+			
+			</center>
 </body>
 </HTML>
