@@ -7,4 +7,4 @@ BootStrap 4.0.0,
 Apache 2.0,
 Tomcat 6.0.x,
 Jquery 3.2.1,
-Chart.JS)
+Chart.JS - MIT Lisence, Apache Lisence)
