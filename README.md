@@ -3,8 +3,8 @@
 
 (using ZXing ("zebra crossing") API
 To get started, please visit: https://github.com/zxing/zxing/wiki/Getting-Started-Developing 
-BootStrap API,
-Apache,
-Tomcat,
-Jquery,
+BootStrap 4.0.0,
+Apache 2.0,
+Tomcat 6.0.x,
+Jquery 3.2.1,
 Chart.JS)
