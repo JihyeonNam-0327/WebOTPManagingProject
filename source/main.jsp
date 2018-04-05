@@ -91,9 +91,12 @@
         <div class="img-cover"></div>
     </div>
 	<br><br><br>
-			<center><font align=center style='color:black; font-size:14pt;'>한국폴리텍대학 융합기술교육원<br>
+			<center><font align=center style='color:black; font-size:20pt;'>한국폴리텍대학 융합기술교육원<br>
 			출석 체크 관리 시스템</font>
-			<br><br><br><br>
+			<br>
+			
+			<img src='img/main1.JPG'>
+			<img src='img/main2.JPG'>
 			
 			</center>
 </body>

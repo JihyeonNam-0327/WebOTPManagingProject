@@ -23,6 +23,22 @@ try{
 	String query = null;
 	PreparedStatement pstm = null;
 	
+	// 외래키가 정해져있으므로 삭제 순서가 중요합니다.
+	query = "delete from managingDB where _id=?";
+	pstm = conn.prepareStatement(query);
+	pstm.setString(1,id);
+	pstm.execute();
+		
+	query = "delete from attendanceDB where _id=?";
+	pstm = conn.prepareStatement(query);
+	pstm.setString(1,id);
+	pstm.execute();
+	
+	query = "delete from otpDB where _id=?";
+	pstm = conn.prepareStatement(query);
+	pstm.setString(1,id);
+	pstm.execute();
+	
 	query = "delete from memberDB where _id=?";
 	pstm = conn.prepareStatement(query);
 	pstm.setString(1,id);
