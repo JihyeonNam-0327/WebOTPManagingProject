@@ -63,7 +63,7 @@ angular.module('myApp', [])
 				}else{
 					$("#resultMessage").text("해당 바코드가 유효하지 않습니다.").css("color","blue");
 				}
-								
+				
 				$('#barcode').val('');
 				$("#barcode").focus();
 			}

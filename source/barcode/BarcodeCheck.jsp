@@ -2,9 +2,9 @@
 <%@ page import="java.sql.*, javax.sql.*, java.io.*, java.util.Date, java.math.*, java.text.*" %>
 <%
 request.setCharacterEncoding("utf-8");
-String code = request.getParameter("code");
-
-int re = 3;	/* 상태 0: 에러, 1:입실, 2:퇴실, 3:default */
+String code2 = request.getParameter("code");
+Long code =  Long.parseLong(code2);
+int re = 0;	/* 상태 0: 에러, 1:입실, 2:퇴실, 3:default */
 int status = 9;
 String name = "";
 String dept = "";
@@ -45,15 +45,37 @@ try{
 	/* status 상태에 따라 다르게 입력
        0: 입실, 1: 지각, 2: 조퇴, 3: 퇴실, 4:결석, 5:출석, 9: 체크되기 이전 상태 
 	   여기에서는 0 또는 3 을 선택하여 입력 */
+	// TODO : 유효하지 않은 숫자일 때 빈칸처리, 에러메세지 표시 처리할 것
 	
 	query = "select _id from otpDB where otp=?";
 	pstm = conn.prepareStatement(query);
-	pstm.setString(1,code);
+	pstm.setLong(1,code);
 	rset = pstm.executeQuery();
 	if(!rset.next()){
 		//해당 otp 는 유효하지 않습니다.
 		re = 0;
-		//out.println("아이디가 없음.");
+		//xml 방식으로 값 보내기
+		response.setContentType("text/xml;charset=utf-8");
+		PrintWriter pw = response.getWriter();
+		pw.print("<?xml version='1.0' encoding='UTF-8' ?>");
+		pw.print("<data>");
+		pw.print("<result>");
+		pw.print(re);
+		pw.print("</result>");
+		pw.print("<name>");
+		pw.print("-");
+		pw.print("</name>");
+		pw.print("<dept>");
+		pw.print("=");
+		pw.print("</dept>");
+		pw.print("<studentid>");
+		pw.print("-");
+		pw.print("</studentid>");
+		pw.print("<date>");
+		pw.print("-");
+		pw.print("</date>");
+		pw.print("</data>");	
+		return;
 	}else{
 		//해당 otp가 존재할 때
 		_id = rset.getString(1);
@@ -93,7 +115,6 @@ try{
 			}
 		}else{
 			re = 0;	//에러
-			out.println("otp가 유효하지 않습니다. QR코드를 다시 발급받아 주세요.");
 		}
 		
 		query = "select name, dept from memberDB where _id=?;";
