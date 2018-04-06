@@ -140,10 +140,17 @@ try{
 		int min = 0;
 		int totalCount = 0;
 		int status = 9;
-		
+		double random = 0.0;
 		/* otp 데이터 생성 (1인 당 1개를 생성) */
 		/* Math.random() 은 double 타입의 0.0 이상 1.0 미만의 랜덤한 숫자를 리턴한다. */
-		double random = Math.random() * (max - min + 1);
+		/* 생성되는 otp는 항상 9자리로 만듭니다. */
+		while(true){
+			random = Math.random() * (max - min + 1);
+			if((int)random>=100000000){
+				break;
+			}
+		}
+		
 		int otpForId = (int) random;
 		
 		query = "update otpDB set otp=? where _id=?;";

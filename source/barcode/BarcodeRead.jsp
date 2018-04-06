@@ -32,7 +32,10 @@ angular.module('myApp', [])
     $scope.myFunc = function() {
 
 		var code = $('#barcode').val();
-		
+		if(code.length<9){
+			//console.log(code + "길이 짧을때");
+		}else{
+			//console.log(code + "길이 맞을때");
 		// ajax 실행
 		$.ajax({
 			type : 'POST',
@@ -49,17 +52,17 @@ angular.module('myApp', [])
 				var dept = $(data).find("dept").text();
 				var id = $(data).find("studentid").text();
 				var date = $(data).find("date").text();
-								
-				if(check == "1") {
+				console.log(code);
+				if(check == 1) {
 					$("#resultMessage").text("정상적으로 출근 처리 되었습니다.").css("color","red");
 					$('#content').text(dept+" "+name+ "(" +id+ ") 님이 " +date+ " 에 체크했습니다.");
-				}else if(check == "2"){
+				}else if(check == 2){
 					$("#resultMessage").text("정상적으로 퇴근 처리 되었습니다.").css("color","red");
 					$('#content').text(dept+" "+name+ "(" +id+ ") 님이 " +date+ " 에 체크했습니다.");
-				}else if(check == "3"){
+				}else if(check == 3){
 					$("#resultMessage").text("하지만 인증 가능한 시간이 아닙니다.").css("color","black");
 					$('#content').text(dept+" "+name+ "(" +id+ ") 님이 " +date+ " 에 체크했습니다.");
-				}else if(check == "0"){
+				}else if(check == 0){
 					$("#resultMessage").text("해당 바코드가 유효하지 않습니다.").css("color","blue");
 					$('#content').text("");
 				}else{
@@ -71,6 +74,7 @@ angular.module('myApp', [])
 				$("#barcode").focus();
 			}
 		});
+		}
     };
 }]);
 
