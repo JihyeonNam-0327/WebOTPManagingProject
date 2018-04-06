@@ -13,6 +13,7 @@
 <head>
 </head>
 <body ng-app="myApp">
+<center>
 <h1 align=center>출석 체크</h1>
 <br>
 <form name="myForm" ng-controller="myCtrl" align=center>
@@ -60,8 +61,10 @@ angular.module('myApp', [])
 					$('#content').text(dept+" "+name+ "(" +id+ ") 님이 " +date+ " 에 체크했습니다.");
 				}else if(check == "0"){
 					$("#resultMessage").text("해당 바코드가 유효하지 않습니다.").css("color","blue");
+					$('#content').text("");
 				}else{
 					$("#resultMessage").text("해당 바코드가 유효하지 않습니다.").css("color","blue");
+					$('#content').text("");
 				}
 				
 				$('#barcode').val('');
@@ -72,5 +75,6 @@ angular.module('myApp', [])
 }]);
 
 </script>
+</center>
 </body>
 </html>

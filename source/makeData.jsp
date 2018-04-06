@@ -81,7 +81,7 @@ class CounterTimerTask extends java.util.TimerTask {
 		query = "DELETE FROM managingDB;";
 		pstm = conn.prepareStatement(query);
 		pstm.execute();
-				
+		
 		rset.close();
 		pstm.close();
 		conn.close(); 
@@ -286,18 +286,23 @@ try{
 	// java 제공 클래스 사용
 	// 하루 한 번 실행합니다.
 	long dayInterval = 24 * 60 * 60 * 1000;
-	String startTime_string = "2018-04-05 23:50:00";
+	String startTime_string = "2018-04-06 23:50:00";
 	Date startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(startTime_string);
 	
 	Timer m_timer = new Timer();
 	TimerTask task = new CounterTimerTask();
-	m_timer.scheduleAtFixedRate(task, startTime, dayInterval);
+	//m_timer.scheduleAtFixedRate(task, startTime, dayInterval);
+	m_timer.cancel();
 	
-	startTime_string = "2018-04-06 00:00:10";
+	startTime_string = "2018-04-07 00:00:10";
+	startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(startTime_string);
 	
-	m_timer = new Timer();
-	task = new InsertTimerTask();
-	m_timer.scheduleAtFixedRate(task, startTime, dayInterval);
+	Timer t_timer = new Timer();
+	TimerTask t_task = new InsertTimerTask();
+	//t_timer.scheduleAtFixedRate(t_task, startTime, dayInterval);
+	t_timer.cancel();
+	
+	out.println("스레드 cancel() 버전임, 실행됐다면 다시 소스 수정할 것 ");
 	
 	out.println("테이블 및 임의의 데이터 생성 완료");
 	pstm.close();

@@ -105,9 +105,9 @@ OTP 유효 시간 : OTP 생성 후 <input name='otp_interval' type=number style=
 </form>
 </td></tr>
 <tr><td>
-기타 옵션 : 관리자 권한으로 OTP를 일괄 생성할 수 도 있습니다. 
+<center>기타 옵션 : 관리자 권한으로 OTP를 일괄 생성할 수 도 있습니다. 
 <b>관리자 권한으로 OTP를 생성하려면 우측 버튼을 눌러 주세요. &nbsp;</b>
-<input type=button class='btn btn-info' name='makeOTP' value='OTP 생성' onclick='location.href="writeOTP.jsp"'/>
+<input type=button class='btn btn-info' name='makeOTP' value='OTP 생성' onclick='location.href="writeOTP.jsp"'/></center>
 </td></tr>
 </table>
 </body>

@@ -4,7 +4,7 @@
 request.setCharacterEncoding("utf-8");
 String code2 = request.getParameter("code");
 Long code =  Long.parseLong(code2);
-int re = 0;	/* 상태 0: 에러, 1:입실, 2:퇴실, 3:default */
+int re = 3;	/* 상태 0: 에러, 1:입실, 2:퇴실, 3:default(otp는 맞는데 입/퇴실 시간이 아닌 경우) */
 int status = 9;
 String name = "";
 String dept = "";
