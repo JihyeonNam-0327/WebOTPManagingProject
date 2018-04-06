@@ -170,7 +170,7 @@ try{
 	pstm.setString(1,id);
 	rset = pstm.executeQuery();
 	if(!rset.next()){
-		out.println("월간 출퇴근 현황이 아직 등록되지 않았습니다.");
+		out.println("<center>월간 출퇴근 현황이 아직 등록되지 않았습니다.</center>");
 		rset.close();
 		pstm.close();
 		conn.close();
@@ -178,7 +178,7 @@ try{
 	}else{
 		size = rset.getInt(1);
 		if(size == 0){
-			out.println("월간 출퇴근 현황이 아직 등록되지 않았습니다.");
+			out.println("<center>월간 출퇴근 현황이 아직 등록되지 않았습니다.</center>");
 			rset.close();
 			pstm.close();
 			conn.close();
