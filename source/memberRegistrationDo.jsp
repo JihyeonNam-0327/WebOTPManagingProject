@@ -63,7 +63,7 @@ try{
 			 + " value(?);";
 	pstm = conn.prepareStatement(query);
 	pstm.setString(1,_id);
-	pstm.execute();				/* status 0: 입실완료, 1: 지각, 2: 조퇴, 3: 퇴실완료, 4:결석 9: 체크되기 이전 상태 */
+	pstm.execute();				/* status 0: 입실완료, 1: 지각, 2: 조퇴, 3: 퇴실완료, 4:결석, 5:출석 9: 체크되기 이전 상태 */
 	
 	pstm.close();
 	conn.close(); 

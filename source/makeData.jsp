@@ -82,35 +82,6 @@ class CounterTimerTask extends java.util.TimerTask {
 		pstm = conn.prepareStatement(query);
 		pstm.execute();
 		
-		rset.close();
-		pstm.close();
-		conn.close(); 
-		}catch(SQLException e){
-			cancel();
-			return;
-		}catch(Exception e){
-			cancel();
-			return;
-		}
-		
-		//cancel();
-	}
-}
-
-class InsertTimerTask extends java.util.TimerTask {
-	
-	public InsertTimerTask() {
-	}
-	
-	public void run() {
-		try{
-		int count = 0;
-		Class.forName("com.mysql.jdbc.Driver");
-		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/iamhpd7","iamhpd7","ctc@kopo");
-		String query = null;
-		ResultSet rset = null;
-		PreparedStatement pstm = null;
-		
 		query = "INSERT INTO managingDB(_id) SELECT _id FROM otpDB;";
 		pstm = conn.prepareStatement(query);
 		pstm.execute();
@@ -118,6 +89,7 @@ class InsertTimerTask extends java.util.TimerTask {
 		rset.close();
 		pstm.close();
 		conn.close(); 
+		
 		}catch(SQLException e){
 			cancel();
 			return;
@@ -138,6 +110,7 @@ try{
 	PreparedStatement pstm = null;
 	
 	/* table이 존재한다면 삭제한 뒤 다시 생성한다. */
+	
 	query = "drop table if exists sysMaster;";
 	pstm = conn.prepareStatement(query);
 	pstm.execute();		// sysMaster 테이블을 새로 생성하기 위해 기존에 테이블이 있었다면 삭제
@@ -201,6 +174,7 @@ try{
 		   + "ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 	pstm = conn.prepareStatement(query);
 	pstm.execute();		// managingDB 테이블 생성 
+	
 	/* 9: 초기값(체크이전상태), 0: 입실완료, 1: 지각, 2: 조퇴, 3: 퇴실, 4: 결석, 5: 정상출석(입/퇴실 모두체크) */
 	
 	out.println("managingDB 테이블 생성 완료");
@@ -286,25 +260,19 @@ try{
 	// java 제공 클래스 사용
 	// 하루 한 번 실행합니다.
 	long dayInterval = 24 * 60 * 60 * 1000;
-	String startTime_string = "2018-04-06 23:50:00";
+	String startTime_string = "2018-04-09 00:00:10";
 	Date startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(startTime_string);
 	
 	Timer m_timer = new Timer();
 	TimerTask task = new CounterTimerTask();
-	//m_timer.scheduleAtFixedRate(task, startTime, dayInterval);
-	m_timer.cancel();
+	m_timer.scheduleAtFixedRate(task, startTime, dayInterval);
+	//m_timer.cancel();
+		
+	//out.println("스레드 cancel() 버전임, 실행됐다면 다시 소스 수정할 것 ");
+	out.println("스레드 실행 버전");
+	out.println("가장 최근에 작업이 실행된 시간은? "+task.scheduledExecutionTime());
 	
-	startTime_string = "2018-04-07 00:00:10";
-	startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(startTime_string);
-	
-	Timer t_timer = new Timer();
-	TimerTask t_task = new InsertTimerTask();
-	//t_timer.scheduleAtFixedRate(t_task, startTime, dayInterval);
-	t_timer.cancel();
-	
-	out.println("스레드 cancel() 버전임, 실행됐다면 다시 소스 수정할 것 ");
-	
-	out.println("테이블 및 임의의 데이터 생성 완료");
+	//out.println("테이블 및 임의의 데이터 생성 완료");
 	pstm.close();
 	conn.close();
 	
